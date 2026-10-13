@@ -11,7 +11,7 @@ class CartController extends Controller
     public function index()
     {
         $cart = session()->get('cart', []);
-        $freeShippingThreshold = (float) Setting::get('free_delivery_threshold', 2500);
+        $freeShippingThreshold = (float) Setting::get('free_delivery_threshold', 0);
         $subtotal = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
 
         return view('pages.cart', compact('cart', 'subtotal', 'freeShippingThreshold'));
@@ -23,7 +23,7 @@ class CartController extends Controller
         $items = array_values($cart);
         $subtotal = collect($items)->sum(fn($item) => $item['price'] * $item['quantity']);
         $count = collect($items)->sum('quantity');
-        $freeShippingThreshold = (float) Setting::get('free_delivery_threshold', 2500);
+        $freeShippingThreshold = (float) Setting::get('free_delivery_threshold', 0);
 
         return response()->json([
             'items' => $items,

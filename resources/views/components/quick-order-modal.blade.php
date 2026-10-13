@@ -23,8 +23,8 @@
              x-data="{
                  cityZone: 'inside_dhaka',
                  division: 'dhaka',
-                 insideDhakaRate: {{ \App\Models\Setting::get('delivery_inside_dhaka', 80) }},
-                 outsideDhakaRate: {{ \App\Models\Setting::get('delivery_outside_dhaka', 130) }},
+                 insideDhakaRate: {{ ((float) \App\Models\Setting::get('delivery_inside_dhaka', 80) == 60 || !(float) \App\Models\Setting::get('delivery_inside_dhaka', 80)) ? 80 : (float) \App\Models\Setting::get('delivery_inside_dhaka', 80) }},
+                 outsideDhakaRate: {{ ((float) \App\Models\Setting::get('delivery_outside_dhaka', 130) == 120 || !(float) \App\Models\Setting::get('delivery_outside_dhaka', 130)) ? 130 : (float) \App\Models\Setting::get('delivery_outside_dhaka', 130) }},
                  qty: 1,
                  onDivisionChange() {
                      if (this.division === 'dhaka') {

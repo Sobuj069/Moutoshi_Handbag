@@ -17,6 +17,15 @@ class CheckoutController extends Controller
         $subtotal = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
         $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 80);
         $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 130);
+        if ($insideDhaka <= 0 || $insideDhaka == 60) {
+            $insideDhaka = 80.0;
+            Setting::set('delivery_inside_dhaka', 80);
+        }
+        if ($outsideDhaka <= 0 || $outsideDhaka == 120) {
+            $outsideDhaka = 130.0;
+            Setting::set('delivery_outside_dhaka', 130);
+        }
+        Setting::set('free_delivery_threshold', 0);
 
         return view('pages.checkout', compact('cart', 'subtotal', 'insideDhaka', 'outsideDhaka'));
     }
@@ -42,12 +51,10 @@ class CheckoutController extends Controller
         $subtotal = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
         $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 80);
         $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 130);
-        $deliveryCharge = ($request->city_zone === 'inside_dhaka') ? $insideDhaka : $outsideDhaka;
+        if ($insideDhaka <= 0 || $insideDhaka == 60) { $insideDhaka = 80.0; }
+        if ($outsideDhaka <= 0 || $outsideDhaka == 120) { $outsideDhaka = 130.0; }
 
-        $freeThreshold = (float) Setting::get('free_delivery_threshold', 0);
-        if ($subtotal >= $freeThreshold && $freeThreshold > 0) {
-            $deliveryCharge = 0.00;
-        }
+        $deliveryCharge = ($request->city_zone === 'inside_dhaka') ? $insideDhaka : $outsideDhaka;
 
         $total = $subtotal + $deliveryCharge;
         $orderNumber = 'MH-' . strtoupper(Str::random(2)) . rand(1000, 9999);

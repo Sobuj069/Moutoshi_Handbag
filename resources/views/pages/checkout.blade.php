@@ -9,9 +9,8 @@
              cityZone: 'inside_dhaka',
              division: 'dhaka',
              subtotal: {{ $subtotal }},
-             insideRate: {{ $insideDhaka }},
-             outsideRate: {{ $outsideDhaka }},
-             freeThreshold: {{ (float) \App\Models\Setting::get('free_delivery_threshold', 0) }},
+             insideRate: {{ ($insideDhaka == 60 || !$insideDhaka) ? 80 : $insideDhaka }},
+             outsideRate: {{ ($outsideDhaka == 120 || !$outsideDhaka) ? 130 : $outsideDhaka }},
              onDivisionChange() {
                  if (this.division === 'dhaka') {
                      this.cityZone = 'inside_dhaka';
@@ -28,10 +27,7 @@
                  }
              },
              get deliveryCharge() {
-                 if (this.subtotal >= this.freeThreshold && this.freeThreshold > 0) {
-                     return 0;
-                 }
-                 return this.cityZone === 'inside_dhaka' ? this.insideRate : this.outsideRate;
+                 return (this.cityZone === 'inside_dhaka') ? this.insideRate : this.outsideRate;
              },
              get grandTotal() {
                  return this.subtotal + this.deliveryCharge;
@@ -260,7 +256,7 @@
                             </div>
                             <div class="flex justify-between text-neutral-600">
                                 <span>Delivery Charge:</span>
-                                <span class="font-bold text-neutral-900" x-text="'৳ ' + deliveryCharge">৳ {{ $insideDhaka }}</span>
+                                <span class="font-bold text-neutral-900" x-text="'৳ ' + deliveryCharge">৳ {{ ($insideDhaka == 60 || !$insideDhaka) ? 80 : $insideDhaka }}</span>
                             </div>
                             <div class="flex justify-between text-base font-extrabold text-neutral-950 pt-3 border-t border-neutral-200">
                                 <span>Total Payable:</span>

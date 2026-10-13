@@ -183,6 +183,8 @@
                         </label>
                         <input type="text" name="primary_image" x-model="formData.primary_image_url" placeholder="https://..."
                                class="w-full text-xs px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black">
+                        <input type="hidden" name="ai_downloaded_image" :value="formData.primary_image_path">
+                        <input type="hidden" name="ai_gallery_images" :value="JSON.stringify(formData.gallery_images)">
                     </div>
 
                     <!-- Primary Image File -->

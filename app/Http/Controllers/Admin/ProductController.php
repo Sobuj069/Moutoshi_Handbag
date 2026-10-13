@@ -115,6 +115,19 @@ class ProductController extends Controller
         $imagePath = $request->primary_image;
         if ($request->hasFile('image_file')) {
             $imagePath = $request->file('image_file')->store('products', 'public');
+            $uploadsDir = public_path('uploads/products');
+            if (!is_dir($uploadsDir)) {
+                @mkdir($uploadsDir, 0755, true);
+            }
+            @copy(storage_path('app/public/' . $imagePath), $uploadsDir . '/' . basename($imagePath));
+
+            if (!is_link(public_path('storage'))) {
+                $storagePubDir = public_path('storage/products');
+                if (!is_dir($storagePubDir)) {
+                    @mkdir($storagePubDir, 0755, true);
+                }
+                @copy(storage_path('app/public/' . $imagePath), $storagePubDir . '/' . basename($imagePath));
+            }
         } elseif ($request->filled('ai_downloaded_image')) {
             $imagePath = $request->ai_downloaded_image;
         }
@@ -198,6 +211,19 @@ class ProductController extends Controller
         $imagePath = $product->primary_image;
         if ($request->hasFile('image_file')) {
             $imagePath = $request->file('image_file')->store('products', 'public');
+            $uploadsDir = public_path('uploads/products');
+            if (!is_dir($uploadsDir)) {
+                @mkdir($uploadsDir, 0755, true);
+            }
+            @copy(storage_path('app/public/' . $imagePath), $uploadsDir . '/' . basename($imagePath));
+
+            if (!is_link(public_path('storage'))) {
+                $storagePubDir = public_path('storage/products');
+                if (!is_dir($storagePubDir)) {
+                    @mkdir($storagePubDir, 0755, true);
+                }
+                @copy(storage_path('app/public/' . $imagePath), $storagePubDir . '/' . basename($imagePath));
+            }
         } elseif ($request->filled('primary_image')) {
             $imagePath = $request->primary_image;
         }

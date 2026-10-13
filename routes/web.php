@@ -118,6 +118,53 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Settings
     Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
+    Route::post('/settings/sync-storage', [AdminSettingController::class, 'syncStorage'])->name('settings.sync-storage');
     Route::post('/settings/test-pathao', [AdminSettingController::class, 'testPathao'])->name('settings.test-pathao');
     Route::post('/settings/test-gemini', [AdminSettingController::class, 'testGemini'])->name('settings.test-gemini');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Storage & Media Fallback Route (cPanel & Shared Hosting Support)
+|--------------------------------------------------------------------------
+| Serves files from storage/app/public/ or public/uploads/ whenever
+| web server symbolic links are not enabled or broken on shared hosting.
+*/
+Route::get('/storage/{path}', function (string $path) {
+    // Sanitize path against directory traversal
+    $cleanPath = str_replace(['..', "\0"], '', $path);
+    $cleanPath = ltrim($cleanPath, '/');
+
+    // 1. Check storage/app/public/
+    $storageFile = storage_path('app/public/' . $cleanPath);
+    if (file_exists($storageFile) && is_file($storageFile)) {
+        $mime = @mime_content_type($storageFile) ?: 'application/octet-stream';
+        return response()->file($storageFile, [
+            'Content-Type' => $mime,
+            'Cache-Control' => 'public, max-age=2592000',
+        ]);
+    }
+
+    // 2. Check public/uploads/
+    $uploadFile = public_path('uploads/' . $cleanPath);
+    if (file_exists($uploadFile) && is_file($uploadFile)) {
+        $mime = @mime_content_type($uploadFile) ?: 'application/octet-stream';
+        return response()->file($uploadFile, [
+            'Content-Type' => $mime,
+            'Cache-Control' => 'public, max-age=2592000',
+        ]);
+    }
+
+    // 3. Check public/storage/ (if physical directory)
+    $publicStorageFile = public_path('storage/' . $cleanPath);
+    if (file_exists($publicStorageFile) && is_file($publicStorageFile)) {
+        $mime = @mime_content_type($publicStorageFile) ?: 'application/octet-stream';
+        return response()->file($publicStorageFile, [
+            'Content-Type' => $mime,
+            'Cache-Control' => 'public, max-age=2592000',
+        ]);
+    }
+
+    abort(404);
+})->where('path', '.*')->name('storage.fallback');
+

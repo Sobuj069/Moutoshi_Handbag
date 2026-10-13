@@ -151,9 +151,9 @@ class ProductAiImportService
             $oembedUrl = "https://www.pinterest.com/oembed.json?url=" . urlencode("https://www.pinterest.com/pin/$pinId/");
             $ch = curl_init($oembedUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0');
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
             curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 6);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             $oembedRes = curl_exec($ch);
             curl_close($ch);
@@ -175,13 +175,13 @@ class ProductAiImportService
             }
         }
 
-        // Fast SSR title fetch using Googlebot User-Agent (responds in 0.6s)
-        if (empty($title) || strlen($title) < 5) {
+        // Fast SSR title & image fallback using Googlebot User-Agent
+        if (empty($title) || strlen($title) < 5 || empty($imageCandidates)) {
             $ch = curl_init($effectiveUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
             curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             $html = (string) curl_exec($ch);
             curl_close($ch);
@@ -193,6 +193,15 @@ class ProductAiImportService
                     $cleanTitle = preg_replace('/\s*\|\s*Pinterest.*$/i', '', $rawTitle);
                     if ($cleanTitle && strlen($cleanTitle) > 3) {
                         $title = $cleanTitle;
+                    }
+                }
+
+                if (empty($imageCandidates) && preg_match('/<meta[^>]+property=["\']og:image["\'][^>]+content=["\'](.*?)["\']/i', $html, $m)) {
+                    $ogImg = trim($m[1]);
+                    if ($ogImg) {
+                        $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/originals/', $ogImg);
+                        $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/736x/', $ogImg);
+                        $imageCandidates[] = $ogImg;
                     }
                 }
             }
@@ -481,7 +490,26 @@ class ProductAiImportService
             $relativeDir = 'products';
             $relativePath = $relativeDir . '/' . $filename;
 
+            // 1. Save to standard Laravel Storage (storage/app/public/products/...)
             Storage::disk('public')->put($relativePath, $binary);
+
+            // 2. Also save directly to public/uploads/products/ (guaranteed direct HTTP access on cPanel)
+            $uploadsDir = public_path('uploads/products');
+            if (!is_dir($uploadsDir)) {
+                @mkdir($uploadsDir, 0755, true);
+            }
+            @file_put_contents($uploadsDir . '/' . $filename, $binary);
+
+            // 3. If public/storage is a real folder (not symlink on cPanel), write there too
+            if (!is_link(public_path('storage'))) {
+                $publicStorageDir = public_path('storage/products');
+                if (!is_dir($publicStorageDir)) {
+                    @mkdir($publicStorageDir, 0755, true);
+                }
+                if (is_dir($publicStorageDir)) {
+                    @file_put_contents($publicStorageDir . '/' . $filename, $binary);
+                }
+            }
 
             $downloaded[] = [
                 'path' => $relativePath,

@@ -253,6 +253,28 @@
                 </div>
             </div>
 
+            <!-- 7. Media & Storage Fix -->
+            <div>
+                <h3 class="text-xs font-bold uppercase tracking-[0.15em] text-neutral-900 font-sans pb-3 border-b border-neutral-200 mb-4 flex items-center justify-between">
+                    <span>7. STORAGE & IMAGE SYNC (cPanel ও হোস্টিং মিডিয়া সমাধান)</span>
+                    <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 border border-emerald-200 rounded-full font-bold">1-Click Fix</span>
+                </h3>
+                <div class="bg-neutral-50 p-4 border border-neutral-200 rounded-xs space-y-3">
+                    <p class="text-xs text-neutral-600">
+                        cPanel বা শেয়ার্ড হোস্টিং-এ প্রোডাক্টের ছবি বা ব্যানার না দেখা গেলে (Symlink নিষ্ক্রিয় থাকলে) নিচের বাটনে ক্লিক করুন। এটি স্টোরেজের সব ছবি সরাসরি পাবলিক ডিরেক্টরিতে সিঙ্ক করে দেবে।
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <button type="button" id="btnSyncStorage"
+                                class="px-4 py-2.5 bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition rounded-xs flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            Sync Images & Fix Storage Now
+                        </button>
+                        <span id="syncStorageStatus" class="text-xs font-medium text-neutral-600"></span>
+                    </div>
+                    <div id="syncStorageResult" class="hidden p-3 text-xs rounded-xs border"></div>
+                </div>
+            </div>
+
             <div class="pt-6 border-t border-neutral-200">
                 <button type="submit" class="px-8 py-3.5 bg-[#1c1c1c] text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition rounded-xs shadow-sm">
                     Save Store Settings
@@ -373,6 +395,51 @@
                 resultBox.classList.remove('hidden');
                 resultBox.className = 'mt-3 p-3 text-xs rounded-xs border bg-red-50 border-red-200 text-red-800';
                 resultBox.innerText = 'Network error: ' + err.message;
+            });
+        });
+
+        // Script for Sync Storage
+        document.getElementById('btnSyncStorage')?.addEventListener('click', function() {
+            const btn = this;
+            const statusText = document.getElementById('syncStorageStatus');
+            const resultBox = document.getElementById('syncStorageResult');
+
+            btn.disabled = true;
+            btn.innerHTML = 'Syncing Images...';
+            statusText.innerText = 'Synchronizing storage files...';
+            resultBox.classList.add('hidden');
+
+            fetch('{{ route("admin.settings.sync-storage") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.innerHTML = '<svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Sync Images & Fix Storage Now';
+                resultBox.classList.remove('hidden');
+
+                if (data.success) {
+                    statusText.innerText = '✓ Complete!';
+                    resultBox.className = 'mt-3 p-3 text-xs rounded-xs border bg-green-50 border-green-200 text-green-800 font-semibold';
+                    resultBox.innerHTML = `✓ ${data.message} (${data.copied || 0} files processed).`;
+                } else {
+                    statusText.innerText = '✕ Error';
+                    resultBox.className = 'mt-3 p-3 text-xs rounded-xs border bg-red-50 border-red-200 text-red-800';
+                    resultBox.innerHTML = `<p class="font-bold">Error:</p><p>${data.message}</p>`;
+                }
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.innerHTML = 'Sync Images & Fix Storage Now';
+                statusText.innerText = '✕ Error';
+                resultBox.classList.remove('hidden');
+                resultBox.className = 'mt-3 p-3 text-xs rounded-xs border bg-red-50 border-red-200 text-red-800';
+                resultBox.innerText = 'Sync failed: ' + err.message;
             });
         });
     </script>

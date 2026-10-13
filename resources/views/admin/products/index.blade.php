@@ -266,7 +266,8 @@
                                 </td>
                                 <td class="py-4 px-4 flex items-center gap-3">
                                     <img src="{{ $product->primary_image_url }}" alt="{{ $product->title }}" 
-                                         class="w-12 h-14 object-cover border border-neutral-200 shrink-0">
+                                         onerror="this.onerror=null; this.src='{{ asset('assets/images/logo.png') }}';"
+                                         class="w-12 h-14 object-cover border border-neutral-200 shrink-0 bg-neutral-100">
                                     <div class="min-w-0">
                                         <h4 class="font-bold text-neutral-900 uppercase truncate max-w-xs">{{ $product->title }}</h4>
                                         <span class="text-[11px] text-neutral-400">SKU: {{ $product->sku ?? 'N/A' }}</span>

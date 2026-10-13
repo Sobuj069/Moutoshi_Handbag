@@ -79,14 +79,32 @@ class Product extends Model
     public function getPrimaryImageUrlAttribute(): string
     {
         if ($this->primary_image) {
-            if (str_starts_with($this->primary_image, 'http')) {
-                return $this->primary_image;
+            $img = trim($this->primary_image);
+
+            if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://')) {
+                return $img;
             }
-            if (str_starts_with($this->primary_image, 'assets/') || str_starts_with($this->primary_image, 'images/')) {
-                return asset($this->primary_image);
+
+            if (str_starts_with($img, 'assets/') || str_starts_with($img, 'images/')) {
+                return asset($img);
             }
-            return asset('storage/' . $this->primary_image);
+
+            if (str_starts_with($img, 'uploads/')) {
+                return asset($img);
+            }
+
+            // Direct check in public/uploads/
+            if (file_exists(public_path('uploads/' . $img))) {
+                return asset('uploads/' . $img);
+            }
+
+            if (str_starts_with($img, 'storage/')) {
+                return asset($img);
+            }
+
+            return asset('storage/' . ltrim($img, '/'));
         }
+
         return asset('assets/images/logo.png');
     }
 }

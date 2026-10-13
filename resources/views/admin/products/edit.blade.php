@@ -67,22 +67,64 @@
                            class="w-full text-xs px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black">
                 </div>
 
-                <!-- Primary Image URL -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">Primary Image URL</label>
-                    <input type="url" name="primary_image" value="{{ old('primary_image', $product->primary_image) }}"
-                           class="w-full text-xs px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black">
-                    @if($product->primary_image)
-                        <img src="{{ $product->primary_image_url }}" class="w-16 h-16 object-cover border mt-2">
-                    @endif
+                <!-- Primary Image URL / Path -->
+                <div x-data="{ 
+                    previewUrl: '{{ $product->primary_image_url }}',
+                    updatePreview(val) {
+                        val = (val || '').trim();
+                        if (!val) {
+                            this.previewUrl = '{{ asset('assets/images/logo.png') }}';
+                        } else if (val.startsWith('http://') || val.startsWith('https://')) {
+                            this.previewUrl = val;
+                        } else if (val.startsWith('assets/') || val.startsWith('images/') || val.startsWith('uploads/')) {
+                            this.previewUrl = '{{ asset('') }}' + val;
+                        } else {
+                            this.previewUrl = '{{ asset('storage') }}/' + val.replace(/^\/+/, '');
+                        }
+                    }
+                }">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">Primary Image URL / Path</label>
+                    <input type="text" name="primary_image" value="{{ old('primary_image', $product->primary_image) }}"
+                           @input="updatePreview($event.target.value)"
+                           placeholder="products/filename.jpg or https://..."
+                           class="w-full text-xs px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black font-mono">
+                    <div class="mt-2.5 flex items-center gap-3 p-2.5 bg-neutral-50 border border-neutral-200 rounded-xs">
+                        <img :src="previewUrl" alt="{{ $product->title }}" 
+                             onerror="this.onerror=null; this.src='{{ asset('assets/images/logo.png') }}';"
+                             class="w-16 h-16 object-cover border border-neutral-300 rounded-xs bg-white shrink-0 shadow-2xs">
+                        <div class="text-[11px] min-w-0">
+                            <span class="font-bold text-neutral-800 block">Current Image Preview</span>
+                            <span class="text-[10px] text-neutral-500 font-mono truncate block max-w-xs">{{ $product->primary_image ?: 'Default placeholder' }}</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Primary Image File -->
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">Or Upload New Image</label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">Or Upload New Image File</label>
                     <input type="file" name="image_file" accept="image/*"
                            class="w-full text-xs px-4 py-2.5 border border-neutral-300 bg-neutral-50">
+                    <p class="text-[10px] text-neutral-400 mt-1">Supported: JPG, PNG, WEBP (Max 3MB). Replaces primary image.</p>
                 </div>
+
+                @if($product->images && $product->images->count() > 0)
+                    <!-- Gallery Images Preview -->
+                    <div class="md:col-span-2 p-3 bg-neutral-50 border border-neutral-200 rounded-xs">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-2">
+                            Product Gallery Images ({{ $product->images->count() }})
+                        </label>
+                        <div class="flex flex-wrap gap-3">
+                            @foreach($product->images as $img)
+                                <div class="p-1 bg-white border border-neutral-300 rounded-xs shadow-2xs flex flex-col items-center">
+                                    <img src="{{ $img->url }}" alt="Gallery Image"
+                                         onerror="this.onerror=null; this.src='{{ asset('assets/images/logo.png') }}';"
+                                         class="w-16 h-16 object-cover rounded-xs">
+                                    <span class="text-[9px] text-neutral-400 font-mono mt-1 max-w-[64px] truncate">{{ basename($img->image_url) }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
 
                 <!-- Short Description -->
                 <div class="md:col-span-2">

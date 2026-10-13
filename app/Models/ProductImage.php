@@ -29,12 +29,28 @@ class ProductImage extends Model
 
     public function getUrlAttribute(): string
     {
-        if (str_starts_with($this->image_url, 'http')) {
-            return $this->image_url;
+        $img = trim((string) $this->image_url);
+
+        if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://')) {
+            return $img;
         }
-        if (str_starts_with($this->image_url, 'assets/') || str_starts_with($this->image_url, 'images/')) {
-            return asset($this->image_url);
+
+        if (str_starts_with($img, 'assets/') || str_starts_with($img, 'images/')) {
+            return asset($img);
         }
-        return asset('storage/' . $this->image_url);
+
+        if (str_starts_with($img, 'uploads/')) {
+            return asset($img);
+        }
+
+        if (file_exists(public_path('uploads/' . $img))) {
+            return asset('uploads/' . $img);
+        }
+
+        if (str_starts_with($img, 'storage/')) {
+            return asset($img);
+        }
+
+        return asset('storage/' . ltrim($img, '/'));
     }
 }

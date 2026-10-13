@@ -96,4 +96,50 @@ class SettingController extends Controller
 
         return back()->with('error', $result['message']);
     }
+
+    public function syncStorage(Request $request)
+    {
+        $source = storage_path('app/public');
+        $destUploads = public_path('uploads');
+        $destStorage = public_path('storage');
+
+        if (!is_dir($source)) {
+            $msg = 'Storage directory not found.';
+            return $request->expectsJson() ? response()->json(['success' => false, 'message' => $msg]) : back()->with('error', $msg);
+        }
+
+        $copiedCount = 0;
+        $copyRecursive = function ($src, $dst) use (&$copyRecursive, &$copiedCount) {
+            $dir = @opendir($src);
+            if (!$dir) return;
+            @mkdir($dst, 0755, true);
+            while (false !== ($file = readdir($dir))) {
+                if ($file != '.' && $file != '..') {
+                    if (is_dir($src . '/' . $file)) {
+                        $copyRecursive($src . '/' . $file, $dst . '/' . $file);
+                    } else {
+                        if (@copy($src . '/' . $file, $dst . '/' . $file)) {
+                            $copiedCount++;
+                        }
+                    }
+                }
+            }
+            closedir($dir);
+        };
+
+        // 1. Copy to public/uploads
+        $copyRecursive($source, $destUploads);
+
+        // 2. If public/storage is not a link, copy directly to public/storage
+        if (!is_link($destStorage)) {
+            $copyRecursive($source, $destStorage);
+        }
+
+        $msg = "Storage synchronization completed! All product images and banners are now directly accessible.";
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => $msg, 'copied' => $copiedCount]);
+        }
+
+        return back()->with('success', $msg);
+    }
 }

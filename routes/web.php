@@ -102,13 +102,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Banners
     Route::resource('banners', AdminBannerController::class);
 
-    // Orders
+    // Web Orders & Courier Dispatch
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+    Route::post('/orders/{order}/send-pathao', [AdminOrderController::class, 'sendToPathao'])->name('orders.send-pathao');
+    Route::post('/orders/{order}/track-pathao', [AdminOrderController::class, 'trackPathao'])->name('orders.track-pathao');
     Route::get('/orders/{order}/invoice', [AdminOrderController::class, 'invoice'])->name('orders.invoice');
+    Route::get('/pathao/zones', [AdminOrderController::class, 'getPathaoZones'])->name('pathao.zones');
+    Route::get('/pathao/areas', [AdminOrderController::class, 'getPathaoAreas'])->name('pathao.areas');
 
     // Settings
     Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
+    Route::post('/settings/test-pathao', [AdminSettingController::class, 'testPathao'])->name('settings.test-pathao');
 });

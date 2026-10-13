@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Services\PathaoService;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -31,6 +32,13 @@ class SettingController extends Controller
             'facebook_url',
             'instagram_url',
             'logo',
+            // Pathao API Configuration
+            'pathao_environment',
+            'pathao_client_id',
+            'pathao_client_secret',
+            'pathao_client_email',
+            'pathao_client_password',
+            'pathao_store_id',
         ];
 
         foreach ($keys as $key) {
@@ -44,6 +52,29 @@ class SettingController extends Controller
             Setting::set('logo', asset('storage/' . $logoPath));
         }
 
-        return back()->with('success', 'Store settings updated successfully.');
+        return back()->with('success', 'Store and courier settings updated successfully.');
+    }
+
+    public function testPathao(Request $request, PathaoService $pathaoService)
+    {
+        $credentials = [
+            'environment' => $request->input('pathao_environment', Setting::get('pathao_environment', 'sandbox')),
+            'client_id' => $request->input('pathao_client_id', Setting::get('pathao_client_id')),
+            'client_secret' => $request->input('pathao_client_secret', Setting::get('pathao_client_secret')),
+            'email' => $request->input('pathao_client_email', Setting::get('pathao_client_email')),
+            'password' => $request->input('pathao_client_password', Setting::get('pathao_client_password')),
+        ];
+
+        $result = $pathaoService->testConnection($credentials);
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json($result);
+        }
+
+        if ($result['success']) {
+            return back()->with('success', $result['message']);
+        }
+
+        return back()->with('error', $result['message']);
     }
 }

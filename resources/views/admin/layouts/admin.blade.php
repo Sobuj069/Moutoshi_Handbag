@@ -36,7 +36,7 @@
                    class="flex items-center justify-between px-4 py-3 rounded-sm transition {{ request()->routeIs('admin.orders*') ? 'bg-[#c9a66b] text-white' : 'text-neutral-400 hover:text-white hover:bg-neutral-800' }}">
                     <div class="flex items-center gap-3">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                        <span>Orders</span>
+                        <span>Web Orders</span>
                     </div>
                     @php $pendingCount = \App\Models\Order::where('order_status', 'pending')->count(); @endphp
                     @if($pendingCount > 0)

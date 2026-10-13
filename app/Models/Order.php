@@ -24,6 +24,12 @@ class Order extends Model
         'payment_method',
         'payment_status',
         'order_status',
+        'courier_name',
+        'consignment_id',
+        'tracking_code',
+        'courier_status',
+        'courier_response',
+        'shipped_at',
         'notes',
     ];
 
@@ -32,6 +38,8 @@ class Order extends Model
         'subtotal' => 'decimal:2',
         'discount' => 'decimal:2',
         'total' => 'decimal:2',
+        'courier_response' => 'array',
+        'shipped_at' => 'datetime',
     ];
 
     public function items(): HasMany
@@ -42,6 +50,36 @@ class Order extends Model
     public function getFormattedTotalAttribute(): string
     {
         return '৳ ' . number_format($this->total, 0);
+    }
+
+    public function isDispatchedToCourier(): bool
+    {
+        return !empty($this->consignment_id);
+    }
+
+    public function getPathaoTrackingUrlAttribute(): ?string
+    {
+        if (empty($this->consignment_id)) {
+            return null;
+        }
+        $env = Setting::get('pathao_environment', 'sandbox');
+        $baseUrl = ($env === 'production') 
+            ? 'https://merchant.pathao.com/tracking' 
+            : 'https://courier-api-sandbox.pathao.com/tracking';
+
+        return "{$baseUrl}?consignment_id={$this->consignment_id}";
+    }
+
+    public function getCourierStatusBadgeClassAttribute(): string
+    {
+        $status = strtolower($this->courier_status ?? '');
+        return match($status) {
+            'pending', 'pickup_pending' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
+            'in_transit', 'picked', 'pickup_assigned' => 'bg-blue-100 text-blue-800 border-blue-200',
+            'delivered' => 'bg-green-100 text-green-800 border-green-200',
+            'return', 'returned', 'cancelled' => 'bg-red-100 text-red-800 border-red-200',
+            default => 'bg-neutral-100 text-neutral-700 border-neutral-200'
+        };
     }
 
     public function getStatusBadgeClassAttribute(): string

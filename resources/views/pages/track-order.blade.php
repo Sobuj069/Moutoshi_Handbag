@@ -97,6 +97,26 @@
                         @endif
                     </div>
 
+                    @if($order->consignment_id)
+                        <!-- Pathao Live Tracking Info -->
+                        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xs flex flex-col sm:flex-row justify-between sm:items-center gap-3 text-xs">
+                            <div class="flex items-center gap-3">
+                                <span class="w-3 h-3 rounded-full bg-red-600 animate-pulse"></span>
+                                <div>
+                                    <span class="font-bold text-red-900 block uppercase">Delivered via Pathao Courier</span>
+                                    <span class="text-red-700 text-[11px]">Consignment ID: <strong class="font-mono">{{ $order->consignment_id }}</strong> | Status: <strong class="uppercase">{{ $order->courier_status ?? 'In Transit' }}</strong></span>
+                                </div>
+                            </div>
+                            @if($order->pathao_tracking_url)
+                                <a href="{{ $order->pathao_tracking_url }}" target="_blank"
+                                   class="px-3 py-1.5 bg-red-600 text-white font-bold uppercase tracking-wider text-[10px] rounded-xs hover:bg-red-700 transition self-start sm:self-auto flex items-center gap-1.5">
+                                    <span>Track on Pathao</span>
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+
                     <!-- Details Card -->
                     <div class="pt-6 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs text-neutral-700">
                         <div>

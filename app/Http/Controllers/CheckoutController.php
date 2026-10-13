@@ -53,7 +53,7 @@ class CheckoutController extends Controller
         }
 
         $total = $subtotal + $deliveryCharge;
-        $orderNumber = 'PTC-' . strtoupper(Str::random(2)) . rand(1000, 9999);
+        $orderNumber = 'MH-' . strtoupper(Str::random(2)) . rand(1000, 9999);
 
         $order = Order::create([
             'order_number' => $orderNumber,
@@ -112,7 +112,7 @@ class CheckoutController extends Controller
         $deliveryCharge = ($request->city_zone === 'inside_dhaka') ? $insideDhaka : $outsideDhaka;
 
         $total = $subtotal + $deliveryCharge;
-        $orderNumber = 'PTC-' . strtoupper(Str::random(2)) . rand(1000, 9999);
+        $orderNumber = 'MH-' . strtoupper(Str::random(2)) . rand(1000, 9999);
 
         $order = Order::create([
             'order_number' => $orderNumber,

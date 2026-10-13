@@ -227,23 +227,94 @@
                                     </div>
                                 </td>
                                 <td class="py-4 px-4 whitespace-nowrap">
-                                    @if($product->is_active)
-                                        <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded-xs uppercase">ACTIVE</span>
-                                    @else
-                                        <span class="px-2 py-0.5 bg-neutral-100 text-neutral-500 text-[10px] font-bold rounded-xs uppercase">DRAFT</span>
-                                    @endif
-                                </td>
-                                <td class="py-4 px-4 text-right space-x-3 whitespace-nowrap">
-                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="font-bold text-[#c9a66b] hover:underline uppercase">
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                    <form action="{{ route('admin.products.bulk-action') }}" method="POST" class="inline-block">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="font-bold text-red-500 hover:underline uppercase">
-                                            Delete
+                                        <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
+                                        <input type="hidden" name="action" value="{{ $product->is_active ? 'set_draft' : 'set_active' }}">
+                                        <button type="submit" title="Click to toggle Active/Draft" 
+                                                class="px-2.5 py-1 text-[10px] font-bold rounded-xs uppercase cursor-pointer transition border {{ $product->is_active ? 'bg-green-100 text-green-800 border-green-300 hover:bg-green-200' : 'bg-neutral-100 text-neutral-600 border-neutral-300 hover:bg-neutral-200' }}">
+                                            {{ $product->is_active ? '● ACTIVE' : '○ DRAFT' }}
                                         </button>
                                     </form>
+                                </td>
+                                <td class="py-4 px-4 text-right whitespace-nowrap">
+                                    <!-- Actions Dropdown -->
+                                    <div x-data="{ open: false }" class="relative inline-block text-left" @click.away="open = false">
+                                        <button type="button" @click="open = !open" 
+                                                class="px-3 py-1.5 bg-[#1c1c1c] hover:bg-black text-white rounded-xs text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-xs transition cursor-pointer">
+                                            <span>Actions</span>
+                                            <svg class="w-3.5 h-3.5 transition-transform duration-150" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                                        </button>
+
+                                        <div x-show="open" x-cloak
+                                             x-transition:enter="transition ease-out duration-100"
+                                             x-transition:enter-start="transform opacity-0 scale-95"
+                                             x-transition:enter-end="transform opacity-100 scale-100"
+                                             x-transition:leave="transition ease-in duration-75"
+                                             x-transition:leave-start="transform opacity-100 scale-100"
+                                             x-transition:leave-end="transform opacity-0 scale-95"
+                                             class="absolute right-0 mt-1.5 w-48 bg-white rounded-xs shadow-2xl border border-neutral-200 py-1.5 z-50 text-left divide-y divide-neutral-100 text-xs">
+                                            
+                                            <div class="py-1">
+                                                <a href="{{ route('admin.products.edit', $product->id) }}" 
+                                                   class="flex items-center gap-2.5 px-3.5 py-2 text-neutral-800 hover:bg-neutral-100 font-semibold transition">
+                                                    <svg class="w-4 h-4 text-neutral-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                                    <span>Edit Product</span>
+                                                </a>
+
+                                                <a href="{{ route('product.show', $product->slug) }}" target="_blank"
+                                                   class="flex items-center gap-2.5 px-3.5 py-2 text-neutral-800 hover:bg-neutral-100 font-semibold transition">
+                                                    <svg class="w-4 h-4 text-neutral-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                                    <span>View on Store</span>
+                                                </a>
+                                            </div>
+
+                                            <!-- Quick Badges & Status Toggle -->
+                                            <div class="py-1">
+                                                <span class="block px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-neutral-400">Toggle Badges:</span>
+                                                
+                                                <form action="{{ route('admin.products.bulk-action') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
+                                                    <input type="hidden" name="action" value="{{ $product->is_featured ? 'unmark_featured' : 'mark_featured' }}">
+                                                    <button type="submit" class="w-full text-left px-3.5 py-1.5 text-[11px] text-neutral-700 hover:bg-neutral-100 transition flex items-center justify-between">
+                                                        <span>⭐ {{ $product->is_featured ? 'Remove Featured' : 'Mark as Featured' }}</span>
+                                                    </button>
+                                                </form>
+
+                                                <form action="{{ route('admin.products.bulk-action') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
+                                                    <input type="hidden" name="action" value="{{ $product->is_sale ? 'unmark_sale' : 'mark_sale' }}">
+                                                    <button type="submit" class="w-full text-left px-3.5 py-1.5 text-[11px] text-neutral-700 hover:bg-neutral-100 transition flex items-center justify-between">
+                                                        <span>🏷️ {{ $product->is_sale ? 'Remove Sale Badge' : 'Add Sale Badge' }}</span>
+                                                    </button>
+                                                </form>
+
+                                                <form action="{{ route('admin.products.bulk-action') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
+                                                    <input type="hidden" name="action" value="{{ $product->is_new ? 'unmark_new' : 'mark_new' }}">
+                                                    <button type="submit" class="w-full text-left px-3.5 py-1.5 text-[11px] text-neutral-700 hover:bg-neutral-100 transition flex items-center justify-between">
+                                                        <span>✨ {{ $product->is_new ? 'Remove New Arrival' : 'Add New Arrival' }}</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                            <!-- Delete Product -->
+                                            <div class="py-1">
+                                                <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="w-full text-left px-3.5 py-2 text-red-600 hover:bg-red-50 font-bold transition flex items-center gap-2">
+                                                        <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                        <span>Delete Product</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

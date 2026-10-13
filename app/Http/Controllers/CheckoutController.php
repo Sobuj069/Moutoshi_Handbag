@@ -14,10 +14,6 @@ class CheckoutController extends Controller
     public function index()
     {
         $cart = session()->get('cart', []);
-        if (empty($cart)) {
-            return redirect()->route('shop.index')->with('info', 'Your cart is empty. Please add items to checkout.');
-        }
-
         $subtotal = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
         $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 60);
         $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 120);

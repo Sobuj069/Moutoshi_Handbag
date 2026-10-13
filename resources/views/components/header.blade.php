@@ -94,19 +94,20 @@
                     </svg>
                 </a>
 
-                <!-- Cart Button with Counter -->
-                <button @click="$store.cart.toggleDrawer()" 
-                        class="flex items-center text-neutral-900 hover:text-[#c9a66b] transition relative p-1"
-                        aria-label="View Cart">
+                <!-- Cart Button with Counter -> Direct Link to Checkout -->
+                <a href="{{ route('checkout.index') }}" 
+                   class="flex items-center text-neutral-900 hover:text-[#c9a66b] transition relative p-1"
+                   aria-label="Checkout">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                     </svg>
+                    @php $serverCount = collect(session('cart', []))->sum('quantity'); @endphp
                     <span x-text="$store.cart.count" 
-                          x-show="$store.cart.count > 0"
+                          x-show="$store.cart.count > 0 || {{ $serverCount }} > 0"
                           class="absolute -top-1 -right-1 bg-[#1c1c1c] text-[#c9a66b] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">
-                        0
+                        {{ $serverCount > 0 ? $serverCount : 0 }}
                     </span>
-                </button>
+                </a>
             </div>
         </div>
     </div>

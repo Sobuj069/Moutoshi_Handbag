@@ -137,9 +137,9 @@
                             ADD TO BAG
                         </button>
 
-                        <!-- Buy It Now / 1-Click COD Modal -->
+                        <!-- Buy It Now / 1-Click Direct to Checkout -->
                         <button type="button"
-                                @click="$store.cart.openBuyNow({{ json_encode($product) }}, selectedVariant)"
+                                @click="buyNowToCheckout({{ $product->id }}, quantity, selectedVariant)"
                                 class="w-full bg-[#1c1c1c] text-white py-4 px-6 text-xs font-bold tracking-[0.2em] uppercase hover:bg-neutral-800 transition text-center shadow-md">
                             BUY IT NOW (ক্যাশ অন ডেলিভারি)
                         </button>
@@ -212,5 +212,32 @@
             </div>
         @endif
     </div>
+
+    @push('scripts')
+    <script>
+        function buyNowToCheckout(productId, quantity, variant) {
+            const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    quantity: quantity || 1,
+                    variant: variant || ''
+                })
+            })
+            .then(() => {
+                window.location.href = "{{ route('checkout.index') }}";
+            })
+            .catch(() => {
+                window.location.href = "{{ route('checkout.index') }}";
+            });
+        }
+    </script>
+    @endpush
 
 @endsection

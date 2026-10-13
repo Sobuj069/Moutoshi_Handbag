@@ -29,10 +29,22 @@
             <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Please enter your shipping address to place the order</p>
         </div>
 
-        <form action="{{ route('checkout.process') }}" method="POST">
-            @csrf
+        @if(empty($cart) || count($cart) === 0)
+            <div class="max-w-md mx-auto text-center py-16 bg-white border border-neutral-200 p-8 shadow-xs">
+                <div class="w-16 h-16 mx-auto mb-4 text-neutral-300">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                </div>
+                <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-900 mb-2">Your Shopping Bag is Empty</h2>
+                <p class="text-xs text-neutral-500 mb-6">Please select and add a handbag to your bag before proceeding to checkout.</p>
+                <a href="{{ route('shop.index', 'all') }}" class="inline-block bg-[#1c1c1c] text-white text-xs font-bold tracking-[0.2em] uppercase py-3.5 px-8 hover:bg-neutral-800 transition">
+                    EXPLORE BAGS (ব্যাগ দেখুন)
+                </a>
+            </div>
+        @else
+            <form action="{{ route('checkout.process') }}" method="POST">
+                @csrf
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
                 
                 <!-- Left: Shipping & Payment Details (7 cols) -->
                 <div class="lg:col-span-7 space-y-8">
@@ -227,6 +239,7 @@
 
             </div>
         </form>
+        @endif
 
     </div>
 

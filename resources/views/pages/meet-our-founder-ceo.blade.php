@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Meet Our Founder & CEO | The Patchee BD')
-@section('meta_description', 'Discover the vision, journey, and story behind The Patchee BD from our Founder & CEO.')
+@section('title', 'Meet Our Founder & CEO | Moutoshi Handbag BD')
+@section('meta_description', 'Discover the vision, journey, and story behind Moutoshi Handbag - Handbag Haven.')
 
 @section('content')
 
@@ -15,7 +15,7 @@
                 MEET OUR FOUNDER & CEO
             </h1>
             <p class="mt-3 text-xs sm:text-sm text-neutral-500 max-w-lg mx-auto font-light leading-relaxed">
-                Building a modern homegrown fashion brand rooted in quality, empowerment, and uncompromising style.
+                Building Handbag Haven — a homegrown fashion brand rooted in quality, student and professional empowerment, and authentic style.
             </p>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             <div class="lg:col-span-5 aspect-[3/4] bg-neutral-100 overflow-hidden shadow-2xl">
-                <img src="https://thepatchee.com/cdn/shop/files/d0783770-4668-4b3e-a3b5-2bbc89c2869f.jpg?v=1776151580&width=800" 
+                <img src="{{ asset('assets/images/fb_profile.jpg') }}" 
                      alt="Founder & CEO" class="w-full h-full object-cover">
             </div>
 
@@ -35,20 +35,20 @@
                 </h2>
                 
                 <p>
-                    When I started The Patchee in Dhaka, I noticed a significant void in Bangladesh’s retail landscape: international designer bags were either prohibitively expensive or cumbersome to import, while local alternatives lacked the sleek silhouettes and longevity that contemporary women deserved.
+                    When I founded Moutoshi Handbag (Handbag Haven), our dream was simple: to design canvas tote bags, college varsity shoulder bags, and luxury handbags that combine durability, supreme aesthetics, and everyday functionality without extreme price tags.
                 </p>
 
                 <p>
-                    Our mission was straightforward yet uncompromising — to deliver bespoke European-inspired craftsmanship directly to Bangladesh at honest, accessible prices. Every bag you touch from The Patchee features hand-finished edges, robust metallic alloys, and premium scratch-resistant vegan leather tested to last through daily commutes.
+                    Every tote and bag from Moutoshi Handbag is crafted with heavy-duty fabrics, robust zippers, and meticulous stitching tested to effortlessly carry laptops, books, makeup, and daily essentials.
                 </p>
 
                 <p>
-                    Thank you for welcoming The Patchee into your daily life. Seeing thousands of empowered students, entrepreneurs, executives, and travelers carry our bags with pride across Bangladesh and internationally is what drives our creative studio every single day.
+                    Thank you for welcoming Moutoshi Handbag into your everyday lifestyle. Seeing confident students, professionals, and travelers across Bangladesh carrying our bags with joy is our ultimate motivation.
                 </p>
 
                 <div class="pt-4 border-t border-neutral-200">
                     <span class="font-bold text-neutral-900 uppercase tracking-wider block text-xs">FOUNDER & CHIEF EXECUTIVE OFFICER</span>
-                    <span class="text-neutral-500 text-xs">The Patchee Bangladesh</span>
+                    <span class="text-neutral-500 text-xs">Moutoshi Handbag BD • Handbag Haven</span>
                 </div>
             </div>
 

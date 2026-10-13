@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Stylish Tote Bags & Side Bags for Ladies | Patchee BD')</title>
-    <meta name="description" content="@yield('meta_description', 'Buy classy tote bags, crossbody bags, and side bags for ladies. Patchee BD offers stylish bags online in Bangladesh at affordable prices.')">
+    <title>@yield('title', 'Moutoshi Handbag - Handbag Haven | Premium Ladies Bags BD')</title>
+    <meta name="description" content="@yield('meta_description', 'Discover stylish tote bags, college bags, canvas totes and luxury handbags at Moutoshi Handbag BD. Handbag Haven with fast delivery across Bangladesh.')">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="https://thepatchee.com/cdn/shop/files/The_Patchee-Logo-05.png?v=1734523690&width=96">
-    <link rel="apple-touch-icon" href="https://thepatchee.com/cdn/shop/files/The_Patchee-Logo-05.png?v=1734523690&width=180">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo.png') }}">
 
     <!-- Google Fonts: Jost (The signature font of thepatchee.com Prestige theme) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

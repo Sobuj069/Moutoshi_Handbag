@@ -79,10 +79,14 @@ class Product extends Model
     public function getPrimaryImageUrlAttribute(): string
     {
         if ($this->primary_image) {
-            return str_starts_with($this->primary_image, 'http')
-                ? $this->primary_image
-                : asset('storage/' . $this->primary_image);
+            if (str_starts_with($this->primary_image, 'http')) {
+                return $this->primary_image;
+            }
+            if (str_starts_with($this->primary_image, 'assets/') || str_starts_with($this->primary_image, 'images/')) {
+                return asset($this->primary_image);
+            }
+            return asset('storage/' . $this->primary_image);
         }
-        return 'https://thepatchee.com/cdn/shop/files/Patchee-Logo-2025_4.png?v=1747217855&width=800';
+        return asset('assets/images/logo.png');
     }
 }

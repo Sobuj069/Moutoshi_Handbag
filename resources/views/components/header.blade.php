@@ -21,15 +21,10 @@
 
             <!-- Logo -->
             <div class="flex-1 lg:flex-none text-center lg:text-left">
-                <a href="{{ route('home') }}" class="inline-block group">
-                    <div class="flex items-center justify-center lg:justify-start gap-2">
-                        <span class="text-2xl md:text-3xl font-extrabold tracking-[0.25em] text-[#1c1c1c] uppercase font-sans group-hover:opacity-90 transition">
-                            PATCHEE
-                        </span>
-                    </div>
-                    <span class="block text-[8px] md:text-[9px] tracking-[0.4em] uppercase text-neutral-500 font-medium -mt-1 text-center lg:text-left">
-                        BANGLADESH
-                    </span>
+                <a href="{{ route('home') }}" class="inline-block group py-1">
+                    <img src="{{ asset('assets/images/logo.png') }}" 
+                         alt="Moutoshi Handbag" 
+                         class="h-10 sm:h-12 w-auto object-contain mx-auto lg:mx-0 group-hover:opacity-90 transition">
                 </a>
             </div>
 
@@ -132,7 +127,7 @@
         <div class="relative w-4/5 max-w-sm bg-white h-full shadow-2xl flex flex-col justify-between py-6 px-6 z-10 overflow-y-auto">
             <div>
                 <div class="flex items-center justify-between border-b pb-4">
-                    <span class="text-xl font-bold tracking-[0.2em] uppercase text-black font-sans">PATCHEE</span>
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Moutoshi Handbag" class="h-8 w-auto object-contain">
                     <button @click="mobileMenuOpen = false" class="p-2 text-neutral-500 hover:text-black">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>

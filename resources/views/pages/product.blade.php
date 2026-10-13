@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $product->title . ' | The Patchee BD')
+@section('title', $product->title . ' | Moutoshi Handbag BD')
 @section('meta_description', $product->short_description ?? $product->title)
 
 @section('content')

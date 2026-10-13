@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Invoice #{{ $order->order_number }} - The Patchee BD</title>
+    <title>Invoice #{{ $order->order_number }} - Moutoshi Handbag BD</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -25,11 +25,9 @@
             padding-bottom: 20px;
             margin-bottom: 25px;
         }
-        .logo {
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+        .logo img {
+            max-height: 48px;
+            object-fit: contain;
         }
         .tagline {
             font-size: 10px;
@@ -102,8 +100,10 @@
     <div class="invoice-box">
         <div class="header">
             <div>
-                <div class="logo">PATCHEE</div>
-                <div class="tagline">BANGLADESH • THE PATCHEE BD</div>
+                <div class="logo">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Moutoshi Handbag">
+                </div>
+                <div class="tagline">BANGLADESH • MOUTOSHI HANDBAG • HANDBAG HAVEN</div>
             </div>
             <div style="text-align: right;">
                 <h2 style="margin: 0; font-size: 18px; text-transform: uppercase;">INVOICE</h2>
@@ -122,9 +122,9 @@
             </div>
             <div style="text-align: right;">
                 <strong style="text-transform: uppercase; font-size: 11px; color: #888;">STORE INFORMATION:</strong>
-                <p style="margin: 5px 0 0; font-weight: bold;">The Patchee Bangladesh</p>
-                <p style="margin: 2px 0;">Banani, Road 11, Dhaka</p>
-                <p style="margin: 2px 0;">Hotline: {{ \App\Models\Setting::get('phone', '+880 1711-223344') }}</p>
+                <p style="margin: 5px 0 0; font-weight: bold;">Moutoshi Handbag BD</p>
+                <p style="margin: 2px 0;">Dhaka, Bangladesh</p>
+                <p style="margin: 2px 0;">Hotline: {{ \App\Models\Setting::get('phone', '+880 1711-000000') }}</p>
                 <p style="margin: 2px 0;">Payment: <strong>{{ strtoupper(str_replace('_', ' ', $order->payment_method)) }}</strong></p>
             </div>
         </div>
@@ -159,7 +159,7 @@
         </div>
 
         <div style="margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 15px; font-size: 11px; color: #777; text-align: center;">
-            Thank you for shopping with The Patchee BD! Please inspect parcel upon delivery. For queries, contact us at {{ \App\Models\Setting::get('phone', '+880 1711-223344') }}.
+            Thank you for shopping with Moutoshi Handbag (Handbag Haven)! Please inspect parcel upon delivery. For queries, contact us at {{ \App\Models\Setting::get('email', 'support@moutoshihandbag.shop') }}.
         </div>
     </div>
 

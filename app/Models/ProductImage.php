@@ -32,6 +32,9 @@ class ProductImage extends Model
         if (str_starts_with($this->image_url, 'http')) {
             return $this->image_url;
         }
+        if (str_starts_with($this->image_url, 'assets/') || str_starts_with($this->image_url, 'images/')) {
+            return asset($this->image_url);
+        }
         return asset('storage/' . $this->image_url);
     }
 }

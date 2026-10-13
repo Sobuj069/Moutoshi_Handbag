@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register Account | The Patchee BD')
+@section('title', 'Register Account | Moutoshi Handbag BD')
 
 @section('content')
 
@@ -10,7 +10,7 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-[0.15em] text-neutral-900 font-sans">
                 CREATE ACCOUNT
             </h1>
-            <p class="text-xs text-neutral-500 mt-1">Join the Patchee movement for seamless tracking & member perks</p>
+            <p class="text-xs text-neutral-500 mt-1">Join Moutoshi Handbag for seamless tracking & member perks</p>
         </div>
 
         <div class="bg-white border border-neutral-200 p-8 shadow-xs">

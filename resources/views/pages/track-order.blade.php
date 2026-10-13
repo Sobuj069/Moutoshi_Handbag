@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Track Your Order | The Patchee BD')
+@section('title', 'Track Your Order | Moutoshi Handbag BD')
 
 @section('content')
 
@@ -21,7 +21,7 @@
                         Order Number / অর্ডার নাম্বার *
                     </label>
                     <input type="text" name="order_number" required value="{{ request('order_number') }}"
-                           placeholder="e.g. PTC-88210"
+                           placeholder="e.g. MH-88210"
                            class="w-full text-xs px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black uppercase">
                 </div>
 

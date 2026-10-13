@@ -20,7 +20,7 @@ class StorefrontPagesTest extends TestCase
     public function test_all_custom_pages_return_status_200(): void
     {
         $urls = [
-            '/' => 'PATCHEE',
+            '/' => 'MOUTOSHI',
             '/collections/all' => 'ALL PRODUCTS',
             '/pages/about-us' => 'WHERE IT ALL BEGAN',
             '/pages/contact' => 'SEND US A MESSAGE',

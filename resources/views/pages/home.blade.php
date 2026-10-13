@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'The Patchee Bangladesh | Stylish Tote Bags & Side Bags for Ladies')
+@section('title', 'Moutoshi Handbag | Handbag Haven Bangladesh')
+@section('meta_description', 'Discover your style at Handbag Haven! Premium canvas tote bags, college varsity bags, and stylish handbags from Moutoshi Handbag.')
 
 @section('content')
 
@@ -89,21 +90,19 @@
     <!-- 2. INFINITE MARQUEE TICKER RIBBON -->
     <div class="bg-[#1c1c1c] text-white py-3.5 overflow-hidden border-y border-neutral-800">
         <div class="animate-marquee whitespace-nowrap text-xs font-semibold tracking-[0.25em] uppercase flex items-center">
-            <span class="mx-6">TIMELESS. BOLD. UNSTOPPABLE.</span>
+            <span class="mx-6">HANDBAG HAVEN</span>
             <span class="text-[#c9a66b]">★</span>
-            <span class="mx-6">THE PATCHEE BANGLADESH</span>
+            <span class="mx-6">MOUTOSHI HANDBAG BANGLADESH</span>
             <span class="text-[#c9a66b]">★</span>
-            <span class="mx-6">PREMIUM LADIES TOTE & CROSSBODY BAGS</span>
+            <span class="mx-6">PREMIUM CANVAS TOTE &amp; FASHION BAGS</span>
             <span class="text-[#c9a66b]">★</span>
             <span class="mx-6">CASH ON DELIVERY ALL OVER BANGLADESH</span>
             <span class="text-[#c9a66b]">★</span>
-            <span class="mx-6">7 DAYS HASSLE-FREE EXCHANGE POLICY</span>
+            <span class="mx-6">7 DAYS HASSLE-FREE EXCHANGE</span>
             <span class="text-[#c9a66b]">★</span>
-            <span class="mx-6">TIMELESS. BOLD. UNSTOPPABLE.</span>
+            <span class="mx-6">MOUTOSHI HANDBAG BANGLADESH</span>
             <span class="text-[#c9a66b]">★</span>
-            <span class="mx-6">THE PATCHEE BANGLADESH</span>
-            <span class="text-[#c9a66b]">★</span>
-            <span class="mx-6">PREMIUM LADIES TOTE & CROSSBODY BAGS</span>
+            <span class="mx-6">DISCOVER YOUR STYLE AT HANDBAG HAVEN</span>
             <span class="text-[#c9a66b]">★</span>
         </div>
     </div>
@@ -277,30 +276,30 @@
     <!-- 8. COMMUNITY & INSTAGRAM LOOKBOOK FEED -->
     <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-8">
-            <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#c9a66b] block mb-1">#THEPATCHEEBD</span>
+            <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#c9a66b] block mb-1">#MOUTOSHIHANDBAG</span>
             <h2 class="text-2xl font-extrabold uppercase tracking-[0.15em] text-neutral-900 font-sans">
-                BAG THE VIBE WITH US
+                DISCOVER YOUR STYLE AT HANDBAG HAVEN
             </h2>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="https://thepatchee.com/cdn/shop/files/d0783770-4668-4b3e-a3b5-2bbc89c2869f.jpg?v=1776151580&width=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <img src="{{ asset('assets/images/bags/canvas-tote-black.jpg') }}" alt="Moutoshi Canvas Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
             <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="https://thepatchee.com/cdn/shop/files/c2ee0999-fc06-4942-aa71-6cd41e71d473.png?v=1782728863&width=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <img src="{{ asset('assets/images/bags/canvas-tote-beige.jpg') }}" alt="Moutoshi Beige Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
             <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="https://thepatchee.com/cdn/shop/files/5084834f-5845-43de-8fad-100416886850.jpg?v=1776148689&width=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <img src="{{ asset('assets/images/bags/canvas-college-varsity.jpg') }}" alt="Moutoshi Varsity Bag" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
             <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="https://thepatchee.com/cdn/shop/files/654a7e83-c512-4ec1-8ebf-af44c488e776.png?v=1781362688&width=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <img src="{{ asset('assets/images/bags/minimalist-shoulder-bag.jpg') }}" alt="Moutoshi Minimalist Bag" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
             <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="https://thepatchee.com/cdn/shop/files/f0d03c76-a64f-43b2-8907-66252bba24e6.png?v=1776663601&width=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <img src="{{ asset('assets/images/bags/olive-green-tote.jpg') }}" alt="Moutoshi Olive Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
             <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="https://thepatchee.com/cdn/shop/files/6d8a6d9b-495a-4d68-ba90-1f87aa300435.jpg?v=1755610521&width=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <img src="{{ asset('assets/images/bags/croissant-dumpling-bag.jpg') }}" alt="Moutoshi Croissant Bag" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
         </div>
     </section>

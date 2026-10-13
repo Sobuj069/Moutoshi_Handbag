@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Terms & Conditions | The Patchee BD')
+@section('title', 'Terms & Conditions | Moutoshi Handbag BD')
 
 @section('content')
 
@@ -14,7 +14,7 @@
                 TERMS & CONDITIONS
             </h1>
             <p class="mt-3 text-xs sm:text-sm text-neutral-500 max-w-lg mx-auto font-light leading-relaxed">
-                Rules, guidelines, and agreements for shopping on The Patchee Bangladesh website.
+                Rules, guidelines, and agreements for shopping on Moutoshi Handbag BD website.
             </p>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div>
             <h2 class="text-sm font-bold uppercase tracking-wider text-neutral-900 font-sans mb-3">1. ACCEPTANCE OF TERMS</h2>
             <p>
-                By accessing, browsing, or placing an order through thepatchee.com or associated portals, you agree to comply with and be bound by these Terms and Conditions and our Privacy Policy.
+                By accessing, browsing, or placing an order through moutoshihandbag.shop or associated portals, you agree to comply with and be bound by these Terms and Conditions and our Privacy Policy.
             </p>
         </div>
 
@@ -38,14 +38,14 @@
         <div>
             <h2 class="text-sm font-bold uppercase tracking-wider text-neutral-900 font-sans mb-3">3. ORDER VERIFICATION & DELIVERY</h2>
             <p>
-                Orders placed via Cash on Delivery are confirmed through phone verification. If our call is unreachable after 3 consecutive attempts across 48 hours, the order may be cancelled. Delivery timelines are 24-48 hours inside Dhaka and 48-72 hours outside Dhaka, subject to unforeseen weather or political circumstances.
+                Orders placed via Cash on Delivery are confirmed through phone verification. If our call is unreachable after 3 consecutive attempts across 48 hours, the order may be cancelled. Delivery timelines are 24-48 hours inside Dhaka and 48-72 hours outside Dhaka, subject to unforeseen weather or courier constraints.
             </p>
         </div>
 
         <div>
             <h2 class="text-sm font-bold uppercase tracking-wider text-neutral-900 font-sans mb-3">4. INTELLECTUAL PROPERTY</h2>
             <p>
-                All visual imagery, logo marks, bag silhouettes, editorial texts, and branding assets are the exclusive intellectual property of The Patchee BD. Unauthorized reproduction or resale is strictly prohibited.
+                All visual imagery, logo marks, bag silhouettes, editorial texts, and branding assets are the exclusive intellectual property of Moutoshi Handbag BD. Unauthorized reproduction or resale is strictly prohibited.
             </p>
         </div>
 

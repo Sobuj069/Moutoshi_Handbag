@@ -92,7 +92,17 @@
                             <span class="text-base text-[#c9a66b]">✉️</span>
                             <div>
                                 <strong class="font-bold text-neutral-900 uppercase block mb-0.5">Customer Support Email</strong>
-                                <p>{{ \App\Models\Setting::get('email', 'support@thepatchee.com') }}</p>
+                                <p>{{ \App\Models\Setting::get('email', 'support@moutoshihandbag.shop') }}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <span class="text-base text-[#1877F2]">🌐</span>
+                            <div>
+                                <strong class="font-bold text-neutral-900 uppercase block mb-0.5">Official Facebook Page</strong>
+                                <a href="https://www.facebook.com/profile.php?id=61559952171891" target="_blank" class="text-[#1877F2] hover:underline font-medium">
+                                    facebook.com/MoutoshiHandbag (Profile ID: 61559952171891)
+                                </a>
                             </div>
                         </div>
                     </div>

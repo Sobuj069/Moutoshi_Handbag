@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Customer Complaint Portal | The Patchee BD')
+@section('title', 'Customer Complaint Portal | Moutoshi Handbag BD')
 @section('meta_description', 'Direct escalation portal for customer complaints, damaged parcel reports, and delayed delivery resolutions.')
 
 @section('content')
@@ -31,7 +31,7 @@
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
                             Order Number / আইডি *
                         </label>
-                        <input type="text" name="order_number" required placeholder="e.g. PTC-88210"
+                        <input type="text" name="order_number" required placeholder="e.g. MH-88210"
                                class="w-full text-xs px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black uppercase">
                     </div>
 

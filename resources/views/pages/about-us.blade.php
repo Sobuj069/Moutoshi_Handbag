@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
-@section('title', 'About Us | Lead with Confidence | The Patchee BD')
-@section('meta_description', 'The Patchee was created to bring something extraordinary to fashion — bags that elevate your style and empower you to lead with confidence.')
+@section('title', 'About Us | Handbag Haven | Moutoshi Handbag BD')
+@section('meta_description', 'Moutoshi Handbag was created to bring something extraordinary to fashion — bags that elevate your style and empower you to lead with confidence.')
 
 @section('content')
 
     <!-- Hero Section -->
     <div class="relative bg-neutral-900 text-white py-24 sm:py-32 overflow-hidden text-center">
         <div class="absolute inset-0 opacity-40">
-            <img src="https://thepatchee.com/cdn/shop/files/DESKTOP_SIZE.webp?v=1791810459&width=1800" 
-                 alt="The Patchee Story" 
+            <img src="{{ asset('assets/images/bags/canvas-tote-black.jpg') }}" 
+                 alt="Moutoshi Handbag Story" 
                  class="w-full h-full object-cover object-center filter blur-xs">
         </div>
         <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
             <span class="text-xs font-bold tracking-[0.3em] uppercase text-[#c9a66b] block mb-3">
-                EST. DHAKA, BANGLADESH
+                🌟 HANDBAG HAVEN • EST. DHAKA, BANGLADESH 🌟
             </span>
             <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-[0.15em] text-white font-sans leading-tight">
-                LEAD WITH CONFIDENCE. OWN YOUR MOMENT.
+                DISCOVER YOUR STYLE. OWN YOUR MOMENT.
             </h1>
             <p class="mt-4 text-sm sm:text-base text-neutral-200 max-w-2xl mx-auto font-light leading-relaxed">
-                The Patchee was created to bring something extraordinary to fashion — bags that elevate your style and empower you to lead with confidence and boldness.
+                Moutoshi Handbag was created to bring something extraordinary to fashion — bags that elevate your everyday style and offer the perfect accessory for every occasion.
             </p>
         </div>
     </div>
@@ -31,29 +31,29 @@
             <div class="space-y-6">
                 <span class="text-xs font-bold tracking-[0.25em] uppercase text-[#c9a66b] block">WHERE IT ALL BEGAN</span>
                 <h2 class="text-2xl sm:text-4xl font-extrabold uppercase tracking-[0.12em] text-neutral-900 font-sans leading-tight">
-                    CONFIDENCE IN EVERY STEP
+                    CONFIDENCE &amp; CRAFTSMANSHIP
                 </h2>
                 <p class="text-xs sm:text-sm text-neutral-600 font-light leading-relaxed">
-                    With thousands of designs and manufacturers to choose from across the globe, we carefully handpick, stress-test, and curate only the finest pieces that marry functionality with breathtaking modern aesthetics.
+                    With thousands of designs and fabric choices, we carefully handpick, test, and curate only the finest pieces that marry everyday utility with aesthetic charm.
                 </p>
                 <p class="text-xs sm:text-sm text-neutral-600 font-light leading-relaxed">
-                    We saw how modern women in Bangladesh were constantly forced to choose between practical utility and high-end fashion. The Patchee bridges that divide with meticulously crafted tote bags, shoulder bags, and accessories that look stunning anywhere from morning board meetings to late-night dinners.
+                    We noticed how women and students in Bangladesh were searching for washable, heavy-duty canvas bags and chic handbags that look stunning anywhere from university campuses to office meetings and weekend outings. Moutoshi Handbag bridges that divide with meticulously crafted pieces.
                 </p>
             </div>
             <div class="aspect-[4/3] bg-neutral-100 overflow-hidden shadow-xl">
-                <img src="https://thepatchee.com/cdn/shop/files/d0783770-4668-4b3e-a3b5-2bbc89c2869f.jpg?v=1776151580&width=1000" 
+                <img src="{{ asset('assets/images/bags/canvas-tote-beige.jpg') }}" 
                      alt="Craftsmanship" class="w-full h-full object-cover">
             </div>
         </div>
     </section>
 
-    <!-- Section 2: Why The Patchee? -->
+    <!-- Section 2: Why Moutoshi Handbag? -->
     <section class="bg-[#faf8f5] py-20 border-y border-neutral-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <span class="text-xs font-bold tracking-[0.25em] uppercase text-[#c9a66b] block mb-2">OUR PHILOSOPHY</span>
                 <h2 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-[0.15em] text-neutral-900 font-sans">
-                    WHY THE PATCHEE?
+                    WHY MOUTOSHI HANDBAG?
                 </h2>
             </div>
 

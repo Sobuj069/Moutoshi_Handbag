@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Dashboard') | The Patchee Admin</title>
+    <title>@yield('title', 'Admin Dashboard') | Moutoshi Handbag Admin</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,7 @@
             <!-- Admin Header -->
             <div class="h-20 flex items-center px-6 border-b border-neutral-800">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-                    <span class="text-xl font-bold tracking-[0.2em] uppercase text-white font-sans">PATCHEE</span>
+                    <span class="text-lg font-bold tracking-[0.15em] uppercase text-white font-sans">MOUTOSHI</span>
                     <span class="px-1.5 py-0.5 bg-[#c9a66b] text-white text-[9px] font-bold rounded-xs uppercase">ADMIN</span>
                 </a>
             </div>

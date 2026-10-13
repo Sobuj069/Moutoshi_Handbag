@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Frequently Asked Questions | The Patchee BD')
+@section('title', 'Frequently Asked Questions | Moutoshi Handbag BD')
 @section('meta_description', 'Find quick answers to common questions about ordering, delivery, tracking, cash on delivery, and exchange policies.')
 
 @section('content')
@@ -71,7 +71,7 @@
                     <span x-text="activeFaq === 'ord-1' ? '−' : '+'" class="text-base text-neutral-500"></span>
                 </button>
                 <div x-show="activeFaq === 'ord-1'" class="px-5 pb-5 text-xs text-neutral-600 font-light leading-relaxed border-t border-neutral-100 pt-3" x-cloak>
-                    Visit our <a href="{{ route('order.track') }}" class="font-bold underline text-black">Track Order</a> page. Enter your Order ID (e.g. PTC-88210) and your mobile number to view live courier tracking.
+                    Visit our <a href="{{ route('order.track') }}" class="font-bold underline text-black">Track Order</a> page. Enter your Order ID (e.g. MH-88210) and your mobile number to view live courier tracking.
                 </div>
             </div>
 
@@ -139,11 +139,11 @@
         <div x-show="activeCategory === 'products'" class="space-y-4" x-cloak>
             <div class="border border-neutral-200 bg-white">
                 <button type="button" @click="toggle('prd-1')" class="w-full text-left p-5 flex justify-between items-center text-xs font-bold uppercase tracking-wider text-neutral-900 font-sans">
-                    <span>What materials are used for Patchee bags?</span>
+                    <span>What materials are used for Moutoshi bags?</span>
                     <span x-text="activeFaq === 'prd-1' ? '−' : '+'" class="text-base text-neutral-500"></span>
                 </button>
                 <div x-show="activeFaq === 'prd-1'" class="px-5 pb-5 text-xs text-neutral-600 font-light leading-relaxed border-t border-neutral-100 pt-3" x-cloak>
-                    Our bags are crafted using ultra-premium scratch-resistant vegan PU leather, waterproof ballistic nylon, high-grade electroplated metallic zippers, and reinforced ergonomic shoulder straps.
+                    Our bags are crafted using heavy-duty washable canvas fabrics, premium scratch-resistant vegan PU leather, robust metallic zippers, and reinforced ergonomic straps.
                 </div>
             </div>
         </div>

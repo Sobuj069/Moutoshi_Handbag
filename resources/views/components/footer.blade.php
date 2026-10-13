@@ -6,21 +6,18 @@
             
             <!-- Brand Column (2 cols on desktop) -->
             <div class="lg:col-span-2 space-y-4">
-                <a href="{{ route('home') }}" class="inline-block">
-                    <span class="text-2xl font-extrabold tracking-[0.25em] uppercase text-white font-sans block">
-                        PATCHEE
-                    </span>
-                    <span class="block text-[8px] tracking-[0.4em] uppercase text-neutral-400 font-medium">
-                        BANGLADESH
-                    </span>
+                <a href="{{ route('home') }}" class="inline-block mb-2">
+                    <img src="{{ asset('assets/images/logo-white-transparent.png') }}" 
+                         alt="Moutoshi Handbag" 
+                         class="h-12 w-auto object-contain">
                 </a>
                 <p class="text-xs text-neutral-400 leading-relaxed font-light max-w-sm">
-                    The Patchee Bangladesh is your premier fashion destination for modern, versatile, and high-quality tote bags, side bags, shoulder bags, and luxury accessories. Designed with passion for everyday elegance.
+                    {{ \App\Models\Setting::get('about_footer', 'Moutoshi Handbag — Handbag Haven. Discover your style with the perfect canvas & fashion handbag for every occasion. Built for university, college, and everyday elegance in Bangladesh.') }}
                 </p>
                 <div class="text-xs text-neutral-400 space-y-1.5 pt-1">
-                    <p>📍 {{ \App\Models\Setting::get('address', 'Banani, Road 11, Block D, Dhaka, Bangladesh') }}</p>
+                    <p>📍 {{ \App\Models\Setting::get('address', 'Dhaka, Bangladesh') }}</p>
                     <p>📞 {{ \App\Models\Setting::get('phone', '+880 1711-223344') }} (Daily 10 AM - 10 PM)</p>
-                    <p>✉️ {{ \App\Models\Setting::get('email', 'support@thepatchee.com') }}</p>
+                    <p>✉️ {{ \App\Models\Setting::get('email', 'support@moutoshihandbag.shop') }}</p>
                 </div>
             </div>
 
@@ -87,7 +84,7 @@
 
         <!-- Bottom Footer (Copyright & Payment Badges) -->
         <div class="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-neutral-500 font-light gap-4">
-            <p>© {{ date('Y') }} The Patchee Bangladesh. All rights reserved. Crafted with luxury aesthetics.</p>
+            <p>© {{ date('Y') }} Moutoshi Handbag Bangladesh. All rights reserved. Handbag Haven.</p>
             <div class="flex items-center gap-3 text-neutral-400 text-[11px] font-medium uppercase tracking-wider">
                 <span class="px-2 py-1 bg-neutral-900 rounded-sm">Cash on Delivery</span>
                 <span class="px-2 py-1 bg-neutral-900 rounded-sm">bKash</span>

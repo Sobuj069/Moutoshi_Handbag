@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ($currentCategory ? $currentCategory->name : 'All Collections') . ' | The Patchee BD')
+@section('title', ($currentCategory ? $currentCategory->name : 'All Collections') . ' | Moutoshi Handbag BD')
 
 @section('content')
 

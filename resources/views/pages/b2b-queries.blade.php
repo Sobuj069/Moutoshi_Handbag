@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'B2B & Corporate Queries | The Patchee BD')
-@section('meta_description', 'Wholesale, custom corporate gifting, executive bag orders, and branded merchandise from The Patchee BD.')
+@section('title', 'B2B & Corporate Queries | Moutoshi Handbag BD')
+@section('meta_description', 'Wholesale, custom corporate gifting, canvas totes, executive bag orders, and branded merchandise from Moutoshi Handbag BD.')
 
 @section('content')
 

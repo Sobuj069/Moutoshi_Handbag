@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Customer Login | The Patchee BD')
+@section('title', 'Customer Login | Moutoshi Handbag BD')
 
 @section('content')
 

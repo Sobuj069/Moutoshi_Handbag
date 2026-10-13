@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login | The Patchee BD</title>
+    <title>Admin Login | Moutoshi Handbag BD</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,10 +15,10 @@
     <div class="bg-white w-full max-w-md p-8 sm:p-10 shadow-2xl border border-neutral-800">
         
         <div class="text-center mb-8">
-            <span class="text-3xl font-extrabold tracking-[0.25em] uppercase text-[#1c1c1c] font-sans">
-                PATCHEE
-            </span>
-            <span class="block text-[10px] tracking-[0.3em] uppercase text-neutral-400 font-bold mt-1">
+            <a href="/" class="inline-block mb-3">
+                <img src="{{ asset('assets/images/logo.png') }}" alt="Moutoshi Handbag" class="h-14 mx-auto object-contain">
+            </a>
+            <span class="block text-[11px] tracking-[0.25em] uppercase text-neutral-500 font-bold">
                 ADMINISTRATION PORTAL
             </span>
         </div>

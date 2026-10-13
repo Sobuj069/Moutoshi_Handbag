@@ -17,31 +17,31 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Store Name</label>
-                        <input type="text" name="site_name" value="{{ $settings['site_name'] ?? 'The Patchee Bangladesh' }}"
+                        <input type="text" name="site_name" value="{{ $settings['site_name'] ?? 'Moutoshi Handbag' }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Store Tagline / Title</label>
-                        <input type="text" name="site_tagline" value="{{ $settings['site_tagline'] ?? 'Stylish Tote Bags & Side Bags for Ladies | Patchee BD' }}"
+                        <input type="text" name="site_tagline" value="{{ $settings['site_tagline'] ?? 'Handbag Haven | Discover your style with the perfect accessory for every occasion' }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Customer Care Phone</label>
-                        <input type="text" name="phone" value="{{ $settings['phone'] ?? '+880 1711-223344' }}"
+                        <input type="text" name="phone" value="{{ $settings['phone'] ?? '+880 1711-000000' }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Support Email</label>
-                        <input type="email" name="email" value="{{ $settings['email'] ?? 'support@thepatchee.com' }}"
+                        <input type="email" name="email" value="{{ $settings['email'] ?? 'support@moutoshihandbag.shop' }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
 
                     <div class="md:col-span-2">
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Physical Store / Office Address</label>
-                        <input type="text" name="address" value="{{ $settings['address'] ?? 'Banani, Road 11, Block D, Dhaka, Bangladesh' }}"
+                        <input type="text" name="address" value="{{ $settings['address'] ?? 'Dhaka, Bangladesh' }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
                 </div>
@@ -107,13 +107,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Facebook URL</label>
-                        <input type="url" name="facebook_url" value="{{ $settings['facebook_url'] ?? 'https://facebook.com/thepatchee' }}"
+                        <input type="url" name="facebook_url" value="{{ $settings['facebook_url'] ?? 'https://www.facebook.com/profile.php?id=61559952171891' }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Instagram URL</label>
-                        <input type="url" name="instagram_url" value="{{ $settings['instagram_url'] ?? 'https://instagram.com/thepatchee' }}"
+                        <input type="url" name="instagram_url" value="{{ $settings['instagram_url'] ?? 'https://instagram.com/moutoshihandbag' }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Exchange & Return Policy | The Patchee BD')
-@section('meta_description', 'Everything you need to know about The Patchee BD 7-day hassle-free return and exchange policy.')
+@section('title', 'Exchange & Return Policy | Moutoshi Handbag BD')
+@section('meta_description', 'Everything you need to know about Moutoshi Handbag BD 7-day hassle-free return and exchange policy.')
 
 @section('content')
 
@@ -15,7 +15,7 @@
                 EXCHANGE & RETURN POLICY
             </h1>
             <p class="mt-3 text-xs sm:text-sm text-neutral-500 max-w-xl mx-auto font-light leading-relaxed">
-                We want you to love every Patchee piece. Here's everything you need to know about our straightforward returns and exchanges.
+                We want you to love every Moutoshi piece. Here's everything you need to know about our straightforward returns and exchanges.
             </p>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Order Confirmed #' . $order->order_number . ' | The Patchee BD')
+@section('title', 'Order Confirmed #' . $order->order_number . ' | Moutoshi Handbag BD')
 
 @section('content')
 

@@ -10,6 +10,51 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        /* Mobile drawer styling (< 1024px) */
+        @media (max-width: 1023px) {
+            #admin-sidebar {
+                position: fixed !important;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 50;
+                transform: translateX(-100%) !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex !important;
+            }
+            #admin-sidebar.sidebar-open {
+                transform: translateX(0) !important;
+            }
+            .admin-drawer-backdrop {
+                position: fixed;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.6);
+                z-index: 45;
+            }
+            .mobile-sidebar-toggle {
+                display: inline-flex !important;
+            }
+        }
+
+        /* Desktop permanent sidebar (>= 1024px) */
+        @media (min-width: 1024px) {
+            #admin-sidebar {
+                position: static !important;
+                transform: none !important;
+                display: flex !important;
+                flex-shrink: 0 !important;
+                width: 16rem !important;
+            }
+            .admin-drawer-backdrop {
+                display: none !important;
+            }
+            .mobile-sidebar-toggle {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body class="bg-neutral-100 font-sans text-neutral-900 antialiased" x-data="{ sidebarOpen: false }">
     
@@ -19,17 +64,12 @@
         <div x-show="sidebarOpen" 
              @click="sidebarOpen = false" 
              x-cloak
-             x-transition:enter="transition-opacity ease-linear duration-200"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="transition-opacity ease-linear duration-200"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs lg:hidden"></div>
+             class="admin-drawer-backdrop"></div>
 
-        <!-- Sidebar (Drawer on mobile, Static on lg+) -->
-        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-               class="fixed inset-y-0 left-0 z-50 w-64 bg-[#1c1c1c] text-white flex flex-col justify-between shrink-0 shadow-2xl transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 lg:shadow-xl">
+        <!-- Sidebar (Permanent on Desktop >= 1024px, Slide drawer on Mobile < 1024px) -->
+        <aside id="admin-sidebar"
+               :class="sidebarOpen ? 'sidebar-open' : ''"
+               class="w-64 bg-[#1c1c1c] text-white flex flex-col justify-between shrink-0 shadow-2xl">
             <div>
                 <!-- Admin Header -->
                 <div class="h-16 lg:h-20 flex items-center justify-between px-6 border-b border-neutral-800">
@@ -117,7 +157,7 @@
                 <div class="flex items-center gap-3 min-w-0">
                     <!-- Mobile Hamburger Toggle -->
                     <button type="button" @click="sidebarOpen = true" 
-                            class="lg:hidden p-2 text-neutral-600 hover:text-black hover:bg-neutral-100 rounded-sm focus:outline-none"
+                            class="mobile-sidebar-toggle lg:hidden p-2 text-neutral-600 hover:text-black hover:bg-neutral-100 rounded-sm focus:outline-none"
                             aria-label="Open sidebar menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     </button>

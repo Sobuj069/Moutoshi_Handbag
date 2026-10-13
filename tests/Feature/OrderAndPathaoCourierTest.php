@@ -53,6 +53,7 @@ class OrderAndPathaoCourierTest extends TestCase
         $this->assertStringStartsWith('MH-', $order->order_number);
         $this->assertEquals('Fatima Begum', $order->customer_name);
         $this->assertEquals('inside_dhaka', $order->city_zone);
+        $this->assertEquals(80, (int) $order->delivery_charge);
         $this->assertCount(1, $order->items);
 
         $response->assertRedirect(route('order.success', $order->order_number));
@@ -87,7 +88,7 @@ class OrderAndPathaoCourierTest extends TestCase
         $order = Order::where('customer_phone', '01812345678')->first();
         $this->assertNotNull($order);
         $this->assertStringStartsWith('MH-', $order->order_number);
-        $this->assertEquals(120, (int) $order->delivery_charge);
+        $this->assertEquals(130, (int) $order->delivery_charge);
 
         $response->assertRedirect(route('order.success', $order->order_number));
     }

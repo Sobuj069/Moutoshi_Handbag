@@ -184,8 +184,8 @@
                             <span x-text="activeTab === 'ship' ? '−' : '+'" class="text-base"></span>
                         </button>
                         <div x-show="activeTab === 'ship'" class="pt-3 text-xs text-neutral-600 font-light leading-relaxed space-y-2" x-cloak>
-                            <p>Inside Dhaka: ৳ 60 (Delivered within 24-48 hours via Steedfast / RedX).</p>
-                            <p>Outside Dhaka: ৳ 120 (Delivered within 48-72 hours via SA Paribahan / Sundarban / Steedfast).</p>
+                            <p>Inside Dhaka: ৳ 80 (Delivered within 24-48 hours via Pathao Courier / Steedfast).</p>
+                            <p>Outside Dhaka: ৳ 130 (Delivered within 48-72 hours via Pathao Courier / SA Paribahan / Sundarban).</p>
                             <p>You can inspect the product in front of the rider before making payment.</p>
                         </div>
                     </div>

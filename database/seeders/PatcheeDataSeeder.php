@@ -64,9 +64,9 @@ class PatcheeDataSeeder extends Seeder
             'announcement_1' => '🌟 Handbag Haven 🌟 | Discover your style with Moutoshi Handbag',
             'announcement_2' => 'Free Delivery on prepaid orders over ৳2,500',
             'announcement_3' => 'Cash On Delivery Available All Over Bangladesh 🇧🇩',
-            'delivery_inside_dhaka' => '60',
-            'delivery_outside_dhaka' => '120',
-            'free_delivery_threshold' => '2500',
+            'delivery_inside_dhaka' => '80',
+            'delivery_outside_dhaka' => '130',
+            'free_delivery_threshold' => '0',
             'facebook_url' => 'https://www.facebook.com/profile.php?id=61559952171891',
             'instagram_url' => 'https://instagram.com/moutoshihandbag',
         ];

@@ -22,9 +22,17 @@
              x-transition:leave-end="opacity-0 scale-95"
              x-data="{
                  cityZone: 'inside_dhaka',
-                 insideDhakaRate: {{ \App\Models\Setting::get('delivery_inside_dhaka', 60) }},
-                 outsideDhakaRate: {{ \App\Models\Setting::get('delivery_outside_dhaka', 120) }},
+                 division: 'dhaka',
+                 insideDhakaRate: {{ \App\Models\Setting::get('delivery_inside_dhaka', 80) }},
+                 outsideDhakaRate: {{ \App\Models\Setting::get('delivery_outside_dhaka', 130) }},
                  qty: 1,
+                 onDivisionChange() {
+                     if (this.division === 'dhaka') {
+                         this.cityZone = 'inside_dhaka';
+                     } else {
+                         this.cityZone = 'outside_dhaka';
+                     }
+                 },
                  get deliveryCharge() {
                      return this.cityZone === 'inside_dhaka' ? this.insideDhakaRate : this.outsideDhakaRate;
                  },
@@ -97,19 +105,35 @@
                            class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                 </div>
 
+                <!-- Division Selector -->
+                <div>
+                    <label class="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-1">Division / বিভাগ নির্বাচন করুন *</label>
+                    <select name="division" x-model="division" @change="onDivisionChange()" 
+                            class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 bg-white font-medium focus:outline-none focus:border-black cursor-pointer">
+                        <option value="dhaka">Dhaka Division (ঢাকা বিভাগ) — ৳ 80</option>
+                        <option value="chattogram">Chattogram (চট্টগ্রাম বিভাগ) — ৳ 130</option>
+                        <option value="rajshahi">Rajshahi (রাজশাহী বিভাগ) — ৳ 130</option>
+                        <option value="khulna">Khulna (খুলনা বিভাগ) — ৳ 130</option>
+                        <option value="barishal">Barishal (বরিশাল বিভাগ) — ৳ 130</option>
+                        <option value="sylhet">Sylhet (সিলেট বিভাগ) — ৳ 130</option>
+                        <option value="rangpur">Rangpur (রংপুর বিভাগ) — ৳ 130</option>
+                        <option value="mymensingh">Mymensingh (ময়মনসিংহ বিভাগ) — ৳ 130</option>
+                    </select>
+                </div>
+
                 <!-- Delivery Zone -->
                 <div>
                     <label class="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-2">Delivery Area / ডেলিভারি এরিয়া *</label>
                     <div class="grid grid-cols-2 gap-3 text-xs">
                         <label class="flex items-center gap-2 p-3 border cursor-pointer transition"
                                :class="cityZone === 'inside_dhaka' ? 'border-black bg-neutral-50 font-bold' : 'border-neutral-200 text-neutral-600'">
-                            <input type="radio" name="city_zone" value="inside_dhaka" x-model="cityZone" class="text-black">
-                            <span>Inside Dhaka (৳ <span x-text="insideDhakaRate"></span>)</span>
+                            <input type="radio" name="city_zone" value="inside_dhaka" x-model="cityZone" @change="division = 'dhaka'" class="text-black">
+                            <span>Inside Dhaka (৳ <span x-text="insideDhakaRate">80</span>)</span>
                         </label>
                         <label class="flex items-center gap-2 p-3 border cursor-pointer transition"
                                :class="cityZone === 'outside_dhaka' ? 'border-black bg-neutral-50 font-bold' : 'border-neutral-200 text-neutral-600'">
-                            <input type="radio" name="city_zone" value="outside_dhaka" x-model="cityZone" class="text-black">
-                            <span>Outside Dhaka (৳ <span x-text="outsideDhakaRate"></span>)</span>
+                            <input type="radio" name="city_zone" value="outside_dhaka" x-model="cityZone" @change="if(division === 'dhaka') division = 'chattogram'" class="text-black">
+                            <span>Outside Dhaka (৳ <span x-text="outsideDhakaRate">130</span>)</span>
                         </label>
                     </div>
                 </div>

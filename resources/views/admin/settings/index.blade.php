@@ -55,19 +55,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Inside Dhaka Rate (৳)</label>
-                        <input type="number" step="1" name="delivery_inside_dhaka" value="{{ $settings['delivery_inside_dhaka'] ?? 60 }}"
+                        <input type="number" step="1" name="delivery_inside_dhaka" value="{{ $settings['delivery_inside_dhaka'] ?? 80 }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Outside Dhaka Rate (৳)</label>
-                        <input type="number" step="1" name="delivery_outside_dhaka" value="{{ $settings['delivery_outside_dhaka'] ?? 120 }}"
+                        <input type="number" step="1" name="delivery_outside_dhaka" value="{{ $settings['delivery_outside_dhaka'] ?? 130 }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Free Delivery Min Spend (৳)</label>
-                        <input type="number" step="1" name="free_delivery_threshold" value="{{ $settings['free_delivery_threshold'] ?? 2500 }}"
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Free Delivery Min Spend (৳) [0 = Disable]</label>
+                        <input type="number" step="1" name="free_delivery_threshold" value="{{ $settings['free_delivery_threshold'] ?? 0 }}"
                                class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 focus:outline-none focus:border-black">
                     </div>
                 </div>

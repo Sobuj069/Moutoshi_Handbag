@@ -7,10 +7,26 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16"
          x-data="{
              cityZone: 'inside_dhaka',
+             division: 'dhaka',
              subtotal: {{ $subtotal }},
              insideRate: {{ $insideDhaka }},
              outsideRate: {{ $outsideDhaka }},
-             freeThreshold: {{ \App\Models\Setting::get('free_delivery_threshold', 2500) }},
+             freeThreshold: {{ (float) \App\Models\Setting::get('free_delivery_threshold', 0) }},
+             onDivisionChange() {
+                 if (this.division === 'dhaka') {
+                     this.cityZone = 'inside_dhaka';
+                 } else {
+                     this.cityZone = 'outside_dhaka';
+                 }
+             },
+             onZoneChange(zone) {
+                 this.cityZone = zone;
+                 if (zone === 'inside_dhaka') {
+                     this.division = 'dhaka';
+                 } else if (this.division === 'dhaka') {
+                     this.division = 'chattogram';
+                 }
+             },
              get deliveryCharge() {
                  if (this.subtotal >= this.freeThreshold && this.freeThreshold > 0) {
                      return 0;
@@ -97,34 +113,62 @@
                             DELIVERY ZONE & ADDRESS (ডেলিভারি ঠিকানা)
                         </h2>
 
-                        <!-- Zone Toggle -->
+                        <!-- 2.1 Division Selector (Auto Calculates Delivery Charge) -->
+                        <div class="mb-5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5 flex items-center justify-between">
+                                <span>Select Division / বিভাগ নির্বাচন করুন *</span>
+                                <span class="text-[11px] font-semibold text-neutral-500 font-sans" x-text="division === 'dhaka' ? 'Inside Dhaka (৳ ' + insideRate + ')' : 'Outside Dhaka (৳ ' + outsideRate + ')'"></span>
+                            </label>
+                            <div class="relative">
+                                <select name="division" x-model="division" @change="onDivisionChange()" 
+                                        class="w-full text-xs px-4 py-3 border border-neutral-300 bg-white font-medium focus:outline-none focus:border-black transition appearance-none cursor-pointer">
+                                    <option value="dhaka">Dhaka Division (ঢাকা বিভাগ) — Delivery ৳ 80</option>
+                                    <option value="chattogram">Chattogram / Chittagong (চট্টগ্রাম বিভাগ) — Delivery ৳ 130</option>
+                                    <option value="rajshahi">Rajshahi (রাজশাহী বিভাগ) — Delivery ৳ 130</option>
+                                    <option value="khulna">Khulna (খুলনা বিভাগ) — Delivery ৳ 130</option>
+                                    <option value="barishal">Barishal (বরিশাল বিভাগ) — Delivery ৳ 130</option>
+                                    <option value="sylhet">Sylhet (সিলেট বিভাগ) — Delivery ৳ 130</option>
+                                    <option value="rangpur">Rangpur (রংপুর বিভাগ) — Delivery ৳ 130</option>
+                                    <option value="mymensingh">Mymensingh (ময়মনসিংহ বিভাগ) — Delivery ৳ 130</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-neutral-500">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-neutral-500 mt-1.5 flex items-center gap-1.5">
+                                <span class="text-green-600 font-bold">✓</span>
+                                <span>ঢাকা বিভাগ নির্বাচন করলে ডেলিভারি চার্জ অটোমেটিক <strong>৳ ৮০</strong>, ঢাকার বাইরের যেকোনো বিভাগে <strong>৳ ১৩০</strong> হবে।</span>
+                            </p>
+                        </div>
+
+                        <!-- 2.2 Zone Toggle / Visual Area Cards -->
                         <div class="mb-5">
                             <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-2">
-                                Select Delivery Area *
+                                Delivery Area (ডেলিভারি এরিয়া) *
                             </label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                                 <label class="flex items-center justify-between p-4 border cursor-pointer transition"
-                                       :class="cityZone === 'inside_dhaka' ? 'border-[#1c1c1c] bg-neutral-50 shadow-xs' : 'border-neutral-200 text-neutral-600'">
+                                       :class="cityZone === 'inside_dhaka' ? 'border-[#1c1c1c] bg-neutral-50 shadow-xs ring-1 ring-black' : 'border-neutral-200 text-neutral-600'">
                                     <div class="flex items-center gap-2.5">
-                                        <input type="radio" name="city_zone" value="inside_dhaka" x-model="cityZone" class="text-black">
+                                        <input type="radio" name="city_zone" value="inside_dhaka" x-model="cityZone" @change="onZoneChange('inside_dhaka')" class="text-black">
                                         <div>
                                             <span class="font-bold block">Inside Dhaka (ঢাকার ভেতর)</span>
                                             <span class="text-[11px] text-neutral-500">Delivery in 24-48 Hours</span>
                                         </div>
                                     </div>
-                                    <span class="font-bold text-neutral-900">৳ <span x-text="insideRate"></span></span>
+                                    <span class="font-extrabold text-neutral-900 text-sm">৳ <span x-text="insideRate">80</span></span>
                                 </label>
 
                                 <label class="flex items-center justify-between p-4 border cursor-pointer transition"
-                                       :class="cityZone === 'outside_dhaka' ? 'border-[#1c1c1c] bg-neutral-50 shadow-xs' : 'border-neutral-200 text-neutral-600'">
+                                       :class="cityZone === 'outside_dhaka' ? 'border-[#1c1c1c] bg-neutral-50 shadow-xs ring-1 ring-black' : 'border-neutral-200 text-neutral-600'">
                                     <div class="flex items-center gap-2.5">
-                                        <input type="radio" name="city_zone" value="outside_dhaka" x-model="cityZone" class="text-black">
+                                        <input type="radio" name="city_zone" value="outside_dhaka" x-model="cityZone" @change="onZoneChange('outside_dhaka')" class="text-black">
                                         <div>
                                             <span class="font-bold block">Outside Dhaka (ঢাকার বাইরে)</span>
                                             <span class="text-[11px] text-neutral-500">Delivery in 48-72 Hours</span>
                                         </div>
                                     </div>
-                                    <span class="font-bold text-neutral-900">৳ <span x-text="outsideRate"></span></span>
+                                    <span class="font-extrabold text-neutral-900 text-sm">৳ <span x-text="outsideRate">130</span></span>
                                 </label>
                             </div>
                         </div>

@@ -37,7 +37,7 @@
                     <span class="font-bold uppercase tracking-wider text-neutral-500 block text-[10px] mb-1">SHIPPING ADDRESS</span>
                     <p class="font-medium">{{ $order->customer_name }}</p>
                     <p>{{ $order->delivery_address }}</p>
-                    <p class="font-semibold mt-1">Zone: {{ $order->city_zone === 'inside_dhaka' ? 'Inside Dhaka (৳60)' : 'Outside Dhaka (৳120)' }}</p>
+                    <p class="font-semibold mt-1">Zone: {{ $order->city_zone === 'inside_dhaka' ? 'Inside Dhaka (৳ ' . number_format($order->delivery_charge, 0) . ')' : 'Outside Dhaka (৳ ' . number_format($order->delivery_charge, 0) . ')' }}</p>
                 </div>
                 <div>
                     <span class="font-bold uppercase tracking-wider text-neutral-500 block text-[10px] mb-1">CONTACT INFO</span>

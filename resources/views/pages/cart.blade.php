@@ -100,7 +100,7 @@
 
                     <div class="pt-4 border-t border-neutral-200 text-[11px] text-neutral-500 space-y-1">
                         <p>✓ Cash on Delivery available across Bangladesh</p>
-                        <p>✓ Fast delivery inside Dhaka (৳60) and outside (৳120)</p>
+                        <p>✓ Fast delivery inside Dhaka (৳80) and outside (৳130)</p>
                     </div>
                 </div>
 

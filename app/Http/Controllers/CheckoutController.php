@@ -15,8 +15,8 @@ class CheckoutController extends Controller
     {
         $cart = session()->get('cart', []);
         $subtotal = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
-        $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 60);
-        $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 120);
+        $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 80);
+        $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 130);
 
         return view('pages.checkout', compact('cart', 'subtotal', 'insideDhaka', 'outsideDhaka'));
     }
@@ -28,6 +28,7 @@ class CheckoutController extends Controller
             'customer_phone' => ['required', 'regex:/^(?:\+?88|01)?\d{9,11}$/'],
             'delivery_address' => 'required|string|max:500',
             'city_zone' => 'required|in:inside_dhaka,outside_dhaka',
+            'division' => 'nullable|string|max:50',
             'customer_email' => 'nullable|email|max:150',
             'payment_method' => 'nullable|string|in:cash_on_delivery,bkash,nagad',
             'notes' => 'nullable|string|max:500',
@@ -39,11 +40,11 @@ class CheckoutController extends Controller
         }
 
         $subtotal = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
-        $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 60);
-        $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 120);
+        $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 80);
+        $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 130);
         $deliveryCharge = ($request->city_zone === 'inside_dhaka') ? $insideDhaka : $outsideDhaka;
 
-        $freeThreshold = (float) Setting::get('free_delivery_threshold', 2500);
+        $freeThreshold = (float) Setting::get('free_delivery_threshold', 0);
         if ($subtotal >= $freeThreshold && $freeThreshold > 0) {
             $deliveryCharge = 0.00;
         }
@@ -103,8 +104,8 @@ class CheckoutController extends Controller
         $quantity = (int) $request->quantity;
         $subtotal = $product->price * $quantity;
 
-        $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 60);
-        $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 120);
+        $insideDhaka = (float) Setting::get('delivery_inside_dhaka', 80);
+        $outsideDhaka = (float) Setting::get('delivery_outside_dhaka', 130);
         $deliveryCharge = ($request->city_zone === 'inside_dhaka') ? $insideDhaka : $outsideDhaka;
 
         $total = $subtotal + $deliveryCharge;

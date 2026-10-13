@@ -18,11 +18,39 @@ class ProductController extends Controller
 
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where('title', 'like', "%{$q}%")->orWhere('sku', 'like', "%{$q}%");
+            $query->where(function ($sub) use ($q) {
+                $sub->where('title', 'like', "%{$q}%")->orWhere('sku', 'like', "%{$q}%");
+            });
         }
 
+        if ($request->filled('section')) {
+            match ($request->section) {
+                'featured' => $query->where('is_featured', true),
+                'sale' => $query->where('is_sale', true),
+                'new' => $query->where('is_new', true),
+                'active' => $query->where('is_active', true),
+                'draft' => $query->where('is_active', false),
+                default => null,
+            };
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $counts = [
+            'all' => Product::count(),
+            'featured' => Product::where('is_featured', true)->count(),
+            'sale' => Product::where('is_sale', true)->count(),
+            'new' => Product::where('is_new', true)->count(),
+            'active' => Product::where('is_active', true)->count(),
+            'draft' => Product::where('is_active', false)->count(),
+        ];
+
+        $categories = Category::orderBy('name')->get();
         $products = $query->paginate(15)->withQueryString();
-        return view('admin.products.index', compact('products'));
+
+        return view('admin.products.index', compact('products', 'counts', 'categories'));
     }
 
     public function create()
@@ -153,6 +181,32 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
+    }
+
+    public function bulkAction(Request $request)
+    {
+        $request->validate([
+            'action' => 'required|string|in:mark_featured,unmark_featured,mark_sale,unmark_sale,mark_new,unmark_new,set_active,set_draft,delete',
+            'product_ids' => 'required|array|min:1',
+            'product_ids.*' => 'exists:products,id',
+        ]);
+
+        $ids = $request->product_ids;
+        $count = count($ids);
+
+        match ($request->action) {
+            'mark_featured' => Product::whereIn('id', $ids)->update(['is_featured' => true]),
+            'unmark_featured' => Product::whereIn('id', $ids)->update(['is_featured' => false]),
+            'mark_sale' => Product::whereIn('id', $ids)->update(['is_sale' => true]),
+            'unmark_sale' => Product::whereIn('id', $ids)->update(['is_sale' => false]),
+            'mark_new' => Product::whereIn('id', $ids)->update(['is_new' => true]),
+            'unmark_new' => Product::whereIn('id', $ids)->update(['is_new' => false]),
+            'set_active' => Product::whereIn('id', $ids)->update(['is_active' => true]),
+            'set_draft' => Product::whereIn('id', $ids)->update(['is_active' => false]),
+            'delete' => Product::whereIn('id', $ids)->delete(),
+        };
+
+        return back()->with('success', "Bulk action applied successfully to {$count} product(s).");
     }
 
     public function destroy(Product $product)

@@ -55,4 +55,49 @@ class AdminTest extends TestCase
         $response = $this->actingAs($customer)->get('/admin');
         $response->assertRedirect('/admin/login');
     }
+
+    public function test_admin_can_filter_products_by_section(): void
+    {
+        $admin = User::where('email', 'admin@thepatchee.com')->first();
+
+        // Filter featured
+        $response = $this->actingAs($admin)->get('/admin/products?section=featured');
+        $response->assertStatus(200);
+        $response->assertSee('Featured on Homepage');
+
+        // Filter sale
+        $response = $this->actingAs($admin)->get('/admin/products?section=sale');
+        $response->assertStatus(200);
+
+        // Filter new arrival
+        $response = $this->actingAs($admin)->get('/admin/products?section=new');
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_can_bulk_action_products(): void
+    {
+        $admin = User::where('email', 'admin@thepatchee.com')->first();
+        $products = \App\Models\Product::take(2)->get();
+        $ids = $products->pluck('id')->toArray();
+
+        // Bulk mark as featured
+        $response = $this->actingAs($admin)->post('/admin/products/bulk-action', [
+            'action' => 'mark_featured',
+            'product_ids' => $ids,
+        ]);
+        $response->assertRedirect();
+        foreach ($ids as $id) {
+            $this->assertTrue(\App\Models\Product::find($id)->is_featured);
+        }
+
+        // Bulk set draft
+        $response = $this->actingAs($admin)->post('/admin/products/bulk-action', [
+            'action' => 'set_draft',
+            'product_ids' => $ids,
+        ]);
+        $response->assertRedirect();
+        foreach ($ids as $id) {
+            $this->assertFalse(\App\Models\Product::find($id)->is_active);
+        }
+    }
 }

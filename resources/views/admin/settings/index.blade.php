@@ -5,7 +5,7 @@
 
 @section('content')
 
-    <div class="max-w-4xl bg-white border border-neutral-200 rounded-xs shadow-2xs p-8">
+    <div class="max-w-4xl bg-white border border-neutral-200 rounded-xs shadow-2xs p-4 sm:p-6 lg:p-8">
         <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf
 

@@ -211,6 +211,48 @@
                 <div id="testPathaoResult" class="hidden mt-3 p-3 text-xs rounded-xs border"></div>
             </div>
 
+            <!-- 6. Google Gemini AI API Settings -->
+            <div id="gemini-section" class="bg-neutral-50 border border-neutral-300 p-6 rounded-xs">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center pb-3 border-b border-neutral-200 mb-4 gap-2">
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-[0.15em] text-neutral-900 font-sans flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></span>
+                            6. GOOGLE GEMINI AI CONFIGURATION (প্রোডাক্ট অটো-ইমপোর্ট এপিআই)
+                        </h3>
+                        <p class="text-[11px] text-neutral-500 mt-0.5">
+                            Pinterest বা যেকোনো প্রোডাক্ট লিঙ্ক দিলে নাম, ছবি, ক্যাটাগরি, ব্র্যান্ড ও দাম অটো-ফিল করার জন্য Gemini AI Key।
+                        </p>
+                    </div>
+                    <span class="px-2.5 py-1 text-[10px] font-bold uppercase rounded-xs {{ !empty($settings['gemini_api_key']) ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-amber-100 text-amber-800 border border-amber-200' }}">
+                        {{ !empty($settings['gemini_api_key']) ? '✓ AI Key Active' : '⚠ Missing Key' }}
+                    </span>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
+                            Google Gemini API Key *
+                        </label>
+                        <input type="text" name="gemini_api_key" id="gemini_api_key_input" value="{{ $settings['gemini_api_key'] ?? config('services.gemini.api_key', '') }}"
+                               placeholder="Enter your Gemini API key (AQ....)"
+                               class="w-full text-xs px-3.5 py-2.5 border border-neutral-300 bg-white focus:outline-none focus:border-black font-mono">
+                        <span class="text-[10px] text-neutral-400 mt-1 block">API Key starting with AQ. (Google AI Studio / Gemini). Multi-model auto fallback enabled.</span>
+                    </div>
+
+                    <!-- Test Connection Button -->
+                    <div class="pt-3 border-t border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <button type="button" id="btnTestGemini"
+                                class="px-4 py-2 bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition rounded-xs flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Test Gemini AI Connection
+                        </button>
+                        <span id="testGeminiStatus" class="text-xs font-medium text-neutral-600"></span>
+                    </div>
+
+                    <div id="testGeminiResult" class="hidden p-3 text-xs rounded-xs border"></div>
+                </div>
+            </div>
+
             <div class="pt-6 border-t border-neutral-200">
                 <button type="submit" class="px-8 py-3.5 bg-[#1c1c1c] text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition rounded-xs shadow-sm">
                     Save Store Settings
@@ -280,6 +322,57 @@
                 resultBox.classList.remove('hidden');
                 resultBox.className = 'mt-3 p-3 text-xs rounded-xs border bg-red-50 border-red-200 text-red-800';
                 resultBox.innerText = 'Network error or invalid server response: ' + err.message;
+            });
+        });
+
+        // Script for Gemini Live Test Connection
+        document.getElementById('btnTestGemini')?.addEventListener('click', function() {
+            const btn = this;
+            const statusText = document.getElementById('testGeminiStatus');
+            const resultBox = document.getElementById('testGeminiResult');
+
+            btn.disabled = true;
+            btn.innerHTML = 'Testing Gemini AI...';
+            statusText.innerText = 'Connecting to Google Gemini API...';
+            resultBox.classList.add('hidden');
+
+            const payload = {
+                _token: '{{ csrf_token() }}',
+                gemini_api_key: document.getElementById('gemini_api_key_input').value,
+            };
+
+            fetch('{{ route("admin.settings.test-gemini") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.innerHTML = '<svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> Test Gemini AI Connection';
+                resultBox.classList.remove('hidden');
+
+                if (data.success) {
+                    statusText.innerText = '✓ Connected!';
+                    resultBox.className = 'mt-3 p-3 text-xs rounded-xs border bg-green-50 border-green-200 text-green-800 font-semibold';
+                    resultBox.innerHTML = `✓ ${data.message} <br><span class="text-[11px] text-green-700">Ready to automatically import products from Pinterest, Shopify, Daraz and any online link.</span>`;
+                } else {
+                    statusText.innerText = '✕ Connection Failed';
+                    resultBox.className = 'mt-3 p-3 text-xs rounded-xs border bg-red-50 border-red-200 text-red-800';
+                    resultBox.innerHTML = `<p class="font-bold">Error:</p><p>${data.message}</p>`;
+                }
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.innerHTML = 'Test Gemini AI Connection';
+                statusText.innerText = '✕ Network Error';
+                resultBox.classList.remove('hidden');
+                resultBox.className = 'mt-3 p-3 text-xs rounded-xs border bg-red-50 border-red-200 text-red-800';
+                resultBox.innerText = 'Network error: ' + err.message;
             });
         });
     </script>

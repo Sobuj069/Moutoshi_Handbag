@@ -20,6 +20,72 @@
         },
         updateSelectAll() {
             this.allSelected = (this.selected.length === this.allIds.length && this.allIds.length > 0);
+        },
+
+        // AI Import Modal State
+        aiModalOpen: false,
+        aiUrl: '',
+        aiLoading: false,
+        aiError: '',
+        aiData: null,
+        aiPublishing: false,
+
+        fetchAi() {
+            if (!this.aiUrl) return;
+            this.aiLoading = true;
+            this.aiError = '';
+            this.aiData = null;
+
+            fetch('{{ route("admin.products.ai-import.analyze") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ url: this.aiUrl })
+            })
+            .then(res => res.json())
+            .then(res => {
+                this.aiLoading = false;
+                if (res.success && res.data) {
+                    this.aiData = res.data;
+                } else {
+                    this.aiError = res.message || 'Could not import product data. Please check the URL.';
+                }
+            })
+            .catch(err => {
+                this.aiLoading = false;
+                this.aiError = 'Error: ' + err.message;
+            });
+        },
+
+        publishAi() {
+            if (!this.aiData) return;
+            this.aiPublishing = true;
+
+            fetch('{{ route("admin.products.ai-import.quick-create") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(this.aiData)
+            })
+            .then(res => res.json())
+            .then(res => {
+                this.aiPublishing = false;
+                if (res.success) {
+                    window.location.reload();
+                } else {
+                    alert(res.message || 'Failed to publish product.');
+                }
+            })
+            .catch(err => {
+                this.aiPublishing = false;
+                alert('Error: ' + err.message);
+            });
         }
     }">
 
@@ -63,11 +129,19 @@
                 </form>
             </div>
 
-            <!-- Add Product Button -->
-            <a href="{{ route('admin.products.create') }}" 
-               class="px-5 py-2.5 bg-[#1c1c1c] text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition text-center rounded-xs shrink-0 flex items-center justify-center gap-2 shadow-xs">
-                <span>+ ADD NEW PRODUCT</span>
-            </a>
+            <!-- Action Buttons: AI Import & Add Product -->
+            <div class="flex items-center gap-2 shrink-0">
+                <button type="button" @click="aiModalOpen = true"
+                        class="px-4 py-2.5 bg-gradient-to-r from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white text-xs font-bold uppercase tracking-wider transition rounded-xs shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span>✨ AI Import</span>
+                </button>
+
+                <a href="{{ route('admin.products.create') }}" 
+                   class="px-5 py-2.5 bg-[#1c1c1c] text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition text-center rounded-xs flex items-center justify-center gap-2 shadow-xs">
+                    <span>+ ADD NEW PRODUCT</span>
+                </a>
+            </div>
         </div>
 
         <!-- Section Filters Strip (Featured, Sale, New Arrival, Active, Draft) -->
@@ -330,6 +404,100 @@
 
             <div class="p-4 sm:p-6 border-t border-neutral-200">
                 {{ $products->links() }}
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- ✨ AI IMPORT MODAL DIALOG -->
+        <!-- ========================================== -->
+        <div x-show="aiModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <!-- Backdrop -->
+            <div x-show="aiModalOpen" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" @click="aiModalOpen = false"></div>
+
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div x-show="aiModalOpen" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                     class="relative transform overflow-hidden rounded-xs bg-white text-left shadow-2xl transition-all sm:my-8 w-full max-w-lg border border-neutral-300">
+                    
+                    <!-- Header -->
+                    <div class="bg-gradient-to-r from-neutral-900 to-[#1c1c1c] text-white px-5 py-4 flex items-center justify-between border-b border-neutral-700">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-white">✨ AI Auto-Import from URL</h3>
+                        </div>
+                        <button type="button" @click="aiModalOpen = false" class="text-neutral-400 hover:text-white text-base font-bold">&times;</button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="p-5 space-y-4">
+                        <p class="text-xs text-neutral-600">
+                            Pinterest, Amazon, Daraz বা যেকোনো শপের প্রোডাক্টের লিঙ্ক পেস্ট করুন—Gemini AI হাই-কোয়ালিটি ছবি, নাম, ক্যাটাগরি, ব্র্যান্ড ও দাম নিয়ে আসবে!
+                        </p>
+
+                        <div class="space-y-2">
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-neutral-700">Product / Pin URL *</label>
+                            <div class="flex gap-2">
+                                <input type="url" x-model="aiUrl" @keydown.enter.prevent="fetchAi()"
+                                       placeholder="e.g. https://www.pinterest.com/pin/... or https://pin.it/..."
+                                       class="flex-1 text-xs px-3 py-2.5 border border-neutral-300 rounded-xs focus:outline-none focus:border-black font-mono">
+                                <button type="button" @click="fetchAi()" :disabled="aiLoading || !aiUrl"
+                                        class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider rounded-xs transition flex items-center gap-1.5 shrink-0 cursor-pointer">
+                                    <span x-text="aiLoading ? 'Fetching...' : '⚡ Fetch'"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Loading indicator -->
+                        <div x-show="aiLoading" x-cloak class="p-3 bg-indigo-50 border border-indigo-200 rounded-xs text-xs text-indigo-800 flex items-center gap-2 animate-pulse">
+                            <svg class="animate-spin h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                            </svg>
+                            <span>হাই-কোয়ালিটি ছবি ডাউনলোড ও Gemini AI প্রসেসিং হচ্ছে...</span>
+                        </div>
+
+                        <!-- Error alert -->
+                        <div x-show="aiError" x-cloak class="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xs">
+                            <span x-text="aiError"></span>
+                        </div>
+
+                        <!-- Preview Card -->
+                        <div x-show="aiData" x-cloak class="p-3.5 bg-neutral-50 border border-neutral-200 rounded-xs space-y-3">
+                            <div class="flex gap-3 items-center">
+                                <img :src="aiData?.primary_image_url" alt="HQ Preview" class="w-20 h-20 object-cover rounded-xs border border-neutral-300 shadow-2xs shrink-0">
+                                <div class="space-y-1 min-w-0">
+                                    <h4 class="font-bold text-neutral-900 text-xs line-clamp-2" x-text="aiData?.title"></h4>
+                                    <div class="flex items-center gap-2 text-xs">
+                                        <span class="font-bold text-neutral-900" x-text="'৳ ' + aiData?.price"></span>
+                                        <span class="text-neutral-400 line-through text-[11px]" x-show="aiData?.compare_at_price" x-text="'৳ ' + aiData?.compare_at_price"></span>
+                                        <span class="text-[10px] bg-neutral-200 px-1.5 py-0.5 rounded-xs" x-text="aiData?.category_name"></span>
+                                    </div>
+                                    <span class="inline-block text-[10px] text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-xs">
+                                        ✓ High-Res Image Ready (<span x-text="aiData?.primary_image_width + 'x' + aiData?.primary_image_height + ' px'"></span>)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="bg-neutral-100 px-5 py-3 border-t border-neutral-200 flex items-center justify-between gap-2">
+                        <a href="{{ route('admin.products.create') }}" class="text-xs text-neutral-600 hover:text-black underline font-medium">
+                            Full Editor
+                        </a>
+                        <div class="flex items-center gap-2">
+                            <button type="button" @click="aiModalOpen = false" class="px-4 py-2 text-neutral-600 hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider rounded-xs">
+                                Close
+                            </button>
+                            <button type="button" x-show="aiData" @click="publishAi()" :disabled="aiPublishing"
+                                    class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider rounded-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                                <span x-text="aiPublishing ? 'Publishing...' : '🚀 Instant Publish'"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

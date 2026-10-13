@@ -94,6 +94,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Products
+    Route::post('products/ai-import/analyze', [AdminProductController::class, 'aiImportAnalyze'])->name('products.ai-import.analyze');
+    Route::post('products/ai-import/quick-create', [AdminProductController::class, 'aiImportQuickCreate'])->name('products.ai-import.quick-create');
     Route::post('products/bulk-action', [AdminProductController::class, 'bulkAction'])->name('products.bulk-action');
     Route::resource('products', AdminProductController::class);
 
@@ -117,4 +119,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
     Route::post('/settings/test-pathao', [AdminSettingController::class, 'testPathao'])->name('settings.test-pathao');
+    Route::post('/settings/test-gemini', [AdminSettingController::class, 'testGemini'])->name('settings.test-gemini');
 });

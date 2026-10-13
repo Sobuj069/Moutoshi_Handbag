@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
+use App\Services\ProductAiImportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -59,6 +60,36 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories'));
     }
 
+    public function aiImportAnalyze(Request $request, ProductAiImportService $aiService)
+    {
+        $request->validate([
+            'url' => 'required|url',
+        ]);
+
+        $result = $aiService->importFromUrl($request->url);
+
+        return response()->json($result);
+    }
+
+    public function aiImportQuickCreate(Request $request, ProductAiImportService $aiService)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'primary_image_path' => 'required|string',
+        ]);
+
+        $product = $aiService->createProductFromData($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => "Product '{$product->title}' imported and published successfully!",
+            'redirect_url' => route('admin.products.index'),
+            'product' => $product,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -69,6 +100,7 @@ class ProductController extends Controller
             'compare_at_price' => 'nullable|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'primary_image' => 'nullable|string',
+            'ai_downloaded_image' => 'nullable|string',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
@@ -83,13 +115,15 @@ class ProductController extends Controller
         $imagePath = $request->primary_image;
         if ($request->hasFile('image_file')) {
             $imagePath = $request->file('image_file')->store('products', 'public');
+        } elseif ($request->filled('ai_downloaded_image')) {
+            $imagePath = $request->ai_downloaded_image;
         }
 
         $product = Product::create([
             'title' => $request->title,
             'slug' => $slug,
             'category_id' => $request->category_id,
-            'sku' => $request->sku ?? ('PTC-' . strtoupper(Str::random(4))),
+            'sku' => $request->sku ?? ('MH-PROD-' . strtoupper(Str::random(4))),
             'price' => $request->price,
             'compare_at_price' => $request->compare_at_price,
             'stock' => $request->stock,
@@ -101,6 +135,25 @@ class ProductController extends Controller
             'is_new' => $request->boolean('is_new'),
             'is_active' => $request->boolean('is_active', true),
         ]);
+
+        // Attach gallery images if available from AI import
+        if ($request->filled('ai_gallery_images')) {
+            $gallery = is_array($request->ai_gallery_images) ? $request->ai_gallery_images : json_decode($request->ai_gallery_images, true);
+            if (is_array($gallery)) {
+                $sort = 1;
+                foreach ($gallery as $g) {
+                    $gPath = is_array($g) ? ($g['path'] ?? null) : $g;
+                    if ($gPath) {
+                        ProductImage::create([
+                            'product_id' => $product->id,
+                            'image_url' => $gPath,
+                            'is_primary' => false,
+                            'sort_order' => $sort++,
+                        ]);
+                    }
+                }
+            }
+        }
 
         // Process variants if provided
         if ($request->filled('variant_names')) {

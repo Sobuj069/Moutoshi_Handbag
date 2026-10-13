@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Services\PathaoService;
+use App\Services\ProductAiImportService;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -39,6 +40,8 @@ class SettingController extends Controller
             'pathao_client_email',
             'pathao_client_password',
             'pathao_store_id',
+            // Google Gemini AI Key
+            'gemini_api_key',
         ];
 
         foreach ($keys as $key) {
@@ -52,7 +55,23 @@ class SettingController extends Controller
             Setting::set('logo', asset('storage/' . $logoPath));
         }
 
-        return back()->with('success', 'Store and courier settings updated successfully.');
+        return back()->with('success', 'Store, courier, and AI settings updated successfully.');
+    }
+
+    public function testGemini(Request $request, ProductAiImportService $aiService)
+    {
+        $key = $request->input('gemini_api_key', Setting::get('gemini_api_key'));
+        $result = $aiService->testConnection($key);
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json($result);
+        }
+
+        if ($result['success']) {
+            return back()->with('success', $result['message']);
+        }
+
+        return back()->with('error', $result['message']);
     }
 
     public function testPathao(Request $request, PathaoService $pathaoService)

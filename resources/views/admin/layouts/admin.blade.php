@@ -20,8 +20,10 @@
                 bottom: 0;
                 left: 0;
                 z-index: 50;
+                width: 16rem !important;
+                height: 100vh !important;
                 transform: translateX(-100%) !important;
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: transform 0.25s ease-in-out;
                 display: flex !important;
             }
             #admin-sidebar.sidebar-open {
@@ -30,33 +32,43 @@
             .admin-drawer-backdrop {
                 position: fixed;
                 inset: 0;
-                background-color: rgba(0, 0, 0, 0.6);
+                background-color: rgba(0, 0, 0, 0.65);
                 z-index: 45;
-            }
-            .mobile-sidebar-toggle {
-                display: inline-flex !important;
+                backdrop-filter: blur(2px);
             }
         }
 
-        /* Desktop permanent sidebar (>= 1024px) */
+        /* Desktop permanent collapsible sidebar (>= 1024px) */
         @media (min-width: 1024px) {
             #admin-sidebar {
-                position: static !important;
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                bottom: auto !important;
+                height: 100vh !important;
                 transform: none !important;
-                display: flex !important;
                 flex-shrink: 0 !important;
+                display: flex !important;
+                transition: width 0.25s ease-in-out, margin-left 0.25s ease-in-out;
+            }
+            #admin-sidebar.sidebar-open {
                 width: 16rem !important;
+                margin-left: 0 !important;
+                visibility: visible !important;
+            }
+            #admin-sidebar:not(.sidebar-open) {
+                width: 0 !important;
+                margin-left: -16rem !important;
+                visibility: hidden !important;
+                overflow: hidden !important;
             }
             .admin-drawer-backdrop {
-                display: none !important;
-            }
-            .mobile-sidebar-toggle {
                 display: none !important;
             }
         }
     </style>
 </head>
-<body class="bg-neutral-100 font-sans text-neutral-900 antialiased" x-data="{ sidebarOpen: false }">
+<body class="bg-neutral-100 font-sans text-neutral-900 antialiased" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
     
     <div class="flex h-screen overflow-hidden">
 
@@ -155,11 +167,14 @@
             <!-- Top Bar -->
             <header class="h-16 lg:h-20 bg-white border-b border-neutral-200 flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0">
                 <div class="flex items-center gap-3 min-w-0">
-                    <!-- Mobile Hamburger Toggle -->
-                    <button type="button" @click="sidebarOpen = true" 
-                            class="mobile-sidebar-toggle lg:hidden p-2 text-neutral-600 hover:text-black hover:bg-neutral-100 rounded-sm focus:outline-none"
-                            aria-label="Open sidebar menu">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <!-- Always Visible Menu Toggle Button (Desktop & Mobile) -->
+                    <button type="button" @click="sidebarOpen = !sidebarOpen" 
+                            class="p-2 px-3 text-neutral-800 hover:text-black hover:bg-neutral-100 rounded-xs border border-neutral-300 shadow-2xs focus:outline-none flex items-center gap-2 cursor-pointer transition mr-2 bg-white shrink-0"
+                            title="Toggle Sidebar Menu (সাইডবার মেনু দেখুন)">
+                        <svg class="w-5 h-5 text-neutral-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <span class="text-xs font-black uppercase tracking-wider font-sans text-neutral-900">MENU</span>
                     </button>
                     <h1 class="text-sm sm:text-lg font-bold uppercase tracking-wider text-neutral-900 font-sans truncate">
                         @yield('header_title', 'Overview')

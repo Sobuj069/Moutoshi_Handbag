@@ -75,57 +75,57 @@ class PatcheeDataSeeder extends Seeder
             Setting::updateOrCreate(['key' => $key], ['value' => $val]);
         }
 
-        // 3. Hero Banners
+        // 3. Hero Banners with Real Moutoshi Handbag Images
         Banner::truncate();
         Banner::create([
-            'title' => 'ELEVATE YOUR STYLE WITH MOUTOSHI',
-            'subtitle' => 'Handbag Haven 👜 | Discover premium canvas totes, varsity bags & daily essentials',
-            'badge' => 'NEW SEASON ARRIVALS',
-            'button_text' => 'SHOP CANVAS TOTES',
+            'title' => 'HANDCRAFTED CANVAS ESSENTIALS',
+            'subtitle' => 'Handbag Haven 👜 | Discover delicate wildflower embroidery & multi-pocket utility totes',
+            'badge' => 'EXCLUSIVE 2026 COLLECTION',
+            'button_text' => 'EXPLORE CANVAS TOTES',
             'button_url' => '/collections/tote-bags',
-            'image_url' => 'assets/images/bags/canvas-tote-black.jpg',
+            'image_url' => 'assets/images/bags/moutoshi-bag-02.jpg',
             'sort_order' => 1,
             'is_active' => true,
         ]);
 
         Banner::create([
-            'title' => 'CAMPUS & CASUAL PERFECTION',
-            'subtitle' => 'Spacious, washable & stylish bags designed for everyday comfort',
-            'badge' => 'BESTSELLER COLLECTION',
-            'button_text' => 'EXPLORE COLLECTION',
+            'title' => 'FUNCTION MEETS AESTHETICS',
+            'subtitle' => 'Spacious, washable, multi-pocket totes designed for campus life & daily outings',
+            'badge' => 'BESTSELLER DROP',
+            'button_text' => 'SHOP POPULAR PICKS',
             'button_url' => '/collections/women',
-            'image_url' => 'assets/images/bags/canvas-college-varsity.jpg',
+            'image_url' => 'assets/images/bags/moutoshi-bag-01.jpg',
             'sort_order' => 2,
             'is_active' => true,
         ]);
 
-        // 4. Collections / Categories
+        // 4. Collections / Categories with Real Images
         $allCategories = [
-            ['name' => 'Women', 'slug' => 'women', 'image' => 'assets/images/bags/canvas-tote-black.jpg', 'desc' => 'Chic, premium tote bags, crossbody, shoulder bags, and accessories for modern women.'],
-            ['name' => 'Tote Bags', 'slug' => 'tote-bags', 'image' => 'assets/images/bags/canvas-tote-beige.jpg', 'desc' => 'Spacious, washable canvas & leather tote bags engineered for work, university, and daily travel.'],
-            ['name' => 'Clutch Bags', 'slug' => 'clutch-bags', 'image' => 'https://thepatchee.com/cdn/shop/files/f0d03c76-a64f-43b2-8907-66252bba24e6.png?v=1776663601&width=600', 'desc' => 'Glamorous evening clutches for weddings, parties, and formal galas.'],
-            ['name' => 'Shoulder Bags', 'slug' => 'shoulder-bags', 'image' => 'assets/images/bags/minimalist-shoulder-bag.jpg', 'desc' => 'Modern aesthetics meet timeless elegance with versatile shoulder bags.'],
-            ['name' => 'Mini Bags', 'slug' => 'mini-bags', 'image' => 'https://thepatchee.com/cdn/shop/files/f0d03c76-a64f-43b2-8907-66252bba24e6.png?v=1776663601&width=600', 'desc' => 'Compact statement pieces for outings, dates, and evenings.'],
-            ['name' => 'Bucket Bags', 'slug' => 'bucket-bags', 'image' => 'assets/images/bags/croissant-dumpling-bag.jpg', 'desc' => 'Drawstring cylindrical silhouettes with relaxed charm and high capacity.'],
-            ['name' => 'Backpacks', 'slug' => 'backpacks', 'image' => 'assets/images/bags/olive-green-tote.jpg', 'desc' => 'Lightweight, durable, multi-compartment backpacks for city commuting and travel.'],
-            ['name' => 'Women Backpacks', 'slug' => 'women-backpack-bags', 'image' => 'assets/images/bags/olive-green-tote.jpg', 'desc' => 'Fashion-forward backpacks tailored for ladies.'],
-            ['name' => 'Crossbody Bags', 'slug' => 'crossbody-bags', 'image' => 'assets/images/bags/croissant-dumpling-bag.jpg', 'desc' => 'Hands-free convenience without compromising on style. Perfect side bags.'],
-            ['name' => 'Women Crossbody Bags', 'slug' => 'women-crossbody-bags', 'image' => 'assets/images/bags/croissant-dumpling-bag.jpg', 'desc' => 'Signature side bags for ladies in Bangladesh.'],
-            ['name' => 'Handbags', 'slug' => 'handbags', 'image' => 'assets/images/bags/classic-leather-handbag.jpg', 'desc' => 'Classy structured ladies top-handle handbags.'],
-            ['name' => 'Sync Set Bags', 'slug' => 'sync-set-bags', 'image' => 'assets/images/bags/aesthetic-linen-shopper.jpg', 'desc' => 'Coordinated matching sets (Tote + Crossbody + Wallet).'],
-            ['name' => 'Men', 'slug' => 'men', 'image' => 'https://thepatchee.com/cdn/shop/files/654a7e83-c512-4ec1-8ebf-af44c488e776.png?v=1781362688&width=600', 'desc' => 'Sleek RFID wallets, commuter backpacks, and minimalist travel gear.'],
-            ['name' => 'Men Backpacks', 'slug' => 'men-backpack-bags', 'image' => 'assets/images/bags/olive-green-tote.jpg', 'desc' => 'Waterproof tech commuting backpacks with laptop compartments.'],
-            ['name' => 'Men Crossbody', 'slug' => 'men-crossbody-bags', 'image' => 'https://thepatchee.com/cdn/shop/files/654a7e83-c512-4ec1-8ebf-af44c488e776.png?v=1781362688&width=600', 'desc' => 'Compact chest bags and sling crossbody bags for men.'],
-            ['name' => 'Unisex', 'slug' => 'unisex', 'image' => 'assets/images/bags/canvas-tote-black.jpg', 'desc' => 'Gender-neutral travel duffles, gym bags, and canvas totes.'],
-            ['name' => 'Cosmetic Bags & Cases', 'slug' => 'cosmetic-bags-cases', 'image' => 'https://thepatchee.com/cdn/shop/files/f0d03c76-a64f-43b2-8907-66252bba24e6.png?v=1776663601&width=600', 'desc' => 'Multi-layer waterproof makeup organizers and pouches.'],
-            ['name' => 'Duffle Bags', 'slug' => 'duffle-bags', 'image' => 'assets/images/bags/canvas-college-varsity.jpg', 'desc' => 'Gym, weekend trips, and flight carry-on duffles built to last.'],
-            ['name' => 'Travel Backpack', 'slug' => 'travel-backpack', 'image' => 'assets/images/bags/olive-green-tote.jpg', 'desc' => 'Large capacity flight approval travel packs.'],
-            ['name' => 'Wallets & Card Holders', 'slug' => 'wallets-card-holders', 'image' => 'https://thepatchee.com/cdn/shop/files/654a7e83-c512-4ec1-8ebf-af44c488e776.png?v=1781362688&width=600', 'desc' => 'Smart RFID pop-up wallets, slim card holders, and luxury clutches.'],
-            ['name' => 'Laptop Bags', 'slug' => 'laptop-bags', 'image' => 'assets/images/bags/canvas-tote-black.jpg', 'desc' => 'Shockproof padded briefcases, totes and sleeves.'],
-            ['name' => 'Accessories', 'slug' => 'accessories', 'image' => 'https://thepatchee.com/cdn/shop/files/f0d03c76-a64f-43b2-8907-66252bba24e6.png?v=1776663601&width=600', 'desc' => 'Premium fashion accessories, key chains, and luxury accents.'],
-            ['name' => 'Bag Charms', 'slug' => 'bag-charms', 'image' => 'https://thepatchee.com/cdn/shop/files/f0d03c76-a64f-43b2-8907-66252bba24e6.png?v=1776663601&width=600', 'desc' => 'Custom charms and metallic tassels to customize your bags.'],
-            ['name' => 'New Arrivals', 'slug' => 'new-arrivals', 'image' => 'assets/images/bags/canvas-college-varsity.jpg', 'desc' => 'Fresh designs added this week to Handbag Haven.'],
-            ['name' => 'Clearance Sale', 'slug' => 'clearance-sale', 'image' => 'assets/images/bags/canvas-tote-beige.jpg', 'desc' => 'Special discount deals on top-selling bags.'],
+            ['name' => 'Women', 'slug' => 'women', 'image' => 'assets/images/bags/moutoshi-bag-02.jpg', 'desc' => 'Chic, handcrafted canvas tote bags, crossbody, shoulder bags, and accessories for women.'],
+            ['name' => 'Tote Bags', 'slug' => 'tote-bags', 'image' => 'assets/images/bags/moutoshi-bag-03.jpg', 'desc' => 'Spacious, heavy-duty washable canvas tote bags engineered for university, work, and travel.'],
+            ['name' => 'Shoulder Bags', 'slug' => 'shoulder-bags', 'image' => 'assets/images/bags/moutoshi-bag-05.jpg', 'desc' => 'Modern aesthetics meet daily functionality with versatile shoulder canvas bags.'],
+            ['name' => 'Crossbody Bags', 'slug' => 'crossbody-bags', 'image' => 'assets/images/bags/moutoshi-bag-06.jpg', 'desc' => 'Hands-free convenience without compromising on style. Perfect daily side bags.'],
+            ['name' => 'Handbags', 'slug' => 'handbags', 'image' => 'assets/images/bags/moutoshi-bag-04.jpg', 'desc' => 'Classy structured ladies top-handle bags and hand-carry canvas shoppers.'],
+            ['name' => 'Sync Set Bags', 'slug' => 'sync-set-bags', 'image' => 'assets/images/bags/moutoshi-bag-01.jpg', 'desc' => 'Matching duo sets for casual dates and campus duos.'],
+            ['name' => 'Backpacks', 'slug' => 'backpacks', 'image' => 'assets/images/bags/moutoshi-bag-08.jpg', 'desc' => 'Multi-compartment bags for city commuting and travel.'],
+            ['name' => 'Women Backpacks', 'slug' => 'women-backpack-bags', 'image' => 'assets/images/bags/moutoshi-bag-08.jpg', 'desc' => 'Fashion-forward backpacks tailored for ladies.'],
+            ['name' => 'Women Crossbody Bags', 'slug' => 'women-crossbody-bags', 'image' => 'assets/images/bags/moutoshi-bag-06.jpg', 'desc' => 'Signature side bags for ladies in Bangladesh.'],
+            ['name' => 'Clutch Bags', 'slug' => 'clutch-bags', 'image' => 'assets/images/bags/moutoshi-bag-07.jpg', 'desc' => 'Compact clutches and wristlet organizers.'],
+            ['name' => 'Mini Bags', 'slug' => 'mini-bags', 'image' => 'assets/images/bags/moutoshi-bag-09.jpg', 'desc' => 'Compact statement pieces for outings, dates, and evenings.'],
+            ['name' => 'Bucket Bags', 'slug' => 'bucket-bags', 'image' => 'assets/images/bags/moutoshi-bag-10.jpg', 'desc' => 'Relaxed charm and high storage capacity.'],
+            ['name' => 'Unisex', 'slug' => 'unisex', 'image' => 'assets/images/bags/moutoshi-bag-10.jpg', 'desc' => 'Gender-neutral durable canvas shoppers and utility bags.'],
+            ['name' => 'Cosmetic Bags & Cases', 'slug' => 'cosmetic-bags-cases', 'image' => 'assets/images/bags/moutoshi-bag-11.jpg', 'desc' => 'Multi-layer pouches for cosmetics and makeup.'],
+            ['name' => 'Duffle Bags', 'slug' => 'duffle-bags', 'image' => 'assets/images/bags/moutoshi-bag-13.jpg', 'desc' => 'Weekend trips and travel carry-on duffles built to last.'],
+            ['name' => 'Travel Backpack', 'slug' => 'travel-backpack', 'image' => 'assets/images/bags/moutoshi-bag-14.jpg', 'desc' => 'Large capacity travel packs.'],
+            ['name' => 'Wallets & Card Holders', 'slug' => 'wallets-card-holders', 'image' => 'assets/images/bags/moutoshi-bag-15.jpg', 'desc' => 'Pouches, slim card holders, and clutches.'],
+            ['name' => 'Laptop Bags', 'slug' => 'laptop-bags', 'image' => 'assets/images/bags/moutoshi-bag-16.jpg', 'desc' => 'Padded canvas totes accommodating 14" and 15" laptops.'],
+            ['name' => 'Accessories', 'slug' => 'accessories', 'image' => 'assets/images/bags/moutoshi-bag-17.jpg', 'desc' => 'Premium fashion accessories and key accents.'],
+            ['name' => 'Bag Charms', 'slug' => 'bag-charms', 'image' => 'assets/images/bags/moutoshi-bag-18.jpg', 'desc' => 'Custom charms to accessorize your bags.'],
+            ['name' => 'Men', 'slug' => 'men', 'image' => 'assets/images/bags/moutoshi-bag-10.jpg', 'desc' => 'Commuter bags and minimalist carry gear.'],
+            ['name' => 'Men Backpacks', 'slug' => 'men-backpack-bags', 'image' => 'assets/images/bags/moutoshi-bag-08.jpg', 'desc' => 'Commuting backpacks with laptop compartments.'],
+            ['name' => 'Men Crossbody', 'slug' => 'men-crossbody-bags', 'image' => 'assets/images/bags/moutoshi-bag-05.jpg', 'desc' => 'Compact utility crossbody bags.'],
+            ['name' => 'New Arrivals', 'slug' => 'new-arrivals', 'image' => 'assets/images/bags/moutoshi-bag-12.jpg', 'desc' => 'Fresh designs added this week to Handbag Haven.'],
+            ['name' => 'Clearance Sale', 'slug' => 'clearance-sale', 'image' => 'assets/images/bags/moutoshi-bag-15.jpg', 'desc' => 'Special discount deals on top-selling bags.'],
         ];
 
         $categories = [];
@@ -142,201 +142,209 @@ class PatcheeDataSeeder extends Seeder
             );
         }
 
-        // 5. Products Data (featuring Moutoshi Handbag collection with local assets)
+        // 5. Products Data (Featuring Moutoshi Handbag REAL Catalog)
         $productsData = [
             [
-                'title' => 'Moutoshi Signature Canvas Tote Bag (Black)',
-                'slug' => 'moutoshi-signature-canvas-tote-black',
+                'title' => 'Moutoshi Hand-Embroidered Wildflower Canvas Tote',
+                'slug' => 'moutoshi-hand-embroidered-wildflower-canvas-tote',
                 'category_slug' => 'tote-bags',
-                'sku' => 'MH-TT-001',
-                'price' => 850.00,
-                'compare_at_price' => 1250.00,
+                'sku' => 'MH-EMB-001',
+                'price' => 750.00,
+                'compare_at_price' => 1150.00,
                 'stock' => 50,
-                'primary_image' => 'assets/images/bags/canvas-tote-black.jpg',
-                'short_description' => 'Heavy-duty 16oz washable canvas tote bag with reinforced handles, inner zip pouch, and spacious compartment.',
-                'description' => '<p>Discover your style at Handbag Haven! The Moutoshi Signature Canvas Tote is crafted with ultra-durable heavy cotton canvas, engineered for university, office, shopping, and everyday errands.</p>
+                'primary_image' => 'assets/images/bags/moutoshi-bag-02.jpg',
+                'short_description' => 'Beautiful hand-embroidered floral design on thick, durable 16oz cotton canvas. Features reinforced shoulder straps and inner safety pocket.',
+                'description' => '<p>Discover your style at Handbag Haven! This signature hand-embroidered tote bag is crafted from pure unbleached cotton canvas with exquisite botanical threadwork. Designed for campus classes, casual outings, library study sessions, and everyday errands.</p>
                 <ul>
-                    <li>Heavy-duty 16oz washable cotton canvas</li>
-                    <li>Interior zippered pocket for phone, keys & cards</li>
-                    <li>Reinforced shoulder straps with cross-stitching</li>
-                    <li>Comfortably fits 15" laptop, notebooks, water bottle & umbrella</li>
+                    <li>Material: 100% Heavy-Duty Washable Cotton Canvas (16oz)</li>
+                    <li>Design: Handcrafted delicate floral embroidery</li>
+                    <li>Compartment: Roomy main chamber with interior zippered pocket</li>
+                    <li>Capacity: Fits 15-inch laptop, textbooks, water bottle & makeup pouch</li>
+                    <li>Handles: Reinforced cross-stitched ergonomic shoulder straps</li>
                 </ul>',
                 'is_featured' => true,
                 'is_sale' => true,
                 'is_new' => true,
                 'images' => [
-                    'assets/images/bags/canvas-tote-black.jpg',
-                    'assets/images/bags/canvas-tote-beige.jpg',
+                    'assets/images/bags/moutoshi-bag-02.jpg',
+                    'assets/images/bags/moutoshi-bag-03.jpg',
+                    'assets/images/bags/moutoshi-bag-07.jpg',
+                    'assets/images/bags/moutoshi-bag-14.jpg',
+                    'assets/images/bags/moutoshi-bag-01.jpg',
                 ],
                 'variants' => [
-                    ['name' => 'Classic Black', 'color_code' => '#1c1c1c'],
-                    ['name' => 'Natural Beige', 'color_code' => '#f2ebd9'],
+                    ['name' => 'Daisy White', 'color_code' => '#fbf8f2'],
+                    ['name' => 'Wildflower Cream', 'color_code' => '#f5eee1'],
                 ],
             ],
             [
-                'title' => 'Moutoshi Aesthetic Canvas Tote Bag (Natural Beige)',
-                'slug' => 'moutoshi-aesthetic-canvas-tote-beige',
+                'title' => 'Moutoshi Multi-Pocket Campus Utility Canvas Tote',
+                'slug' => 'moutoshi-multi-pocket-campus-utility-canvas-tote',
                 'category_slug' => 'tote-bags',
-                'sku' => 'MH-TT-002',
+                'sku' => 'MH-UTL-002',
                 'price' => 850.00,
                 'compare_at_price' => 1250.00,
                 'stock' => 45,
-                'primary_image' => 'assets/images/bags/canvas-tote-beige.jpg',
-                'short_description' => 'Minimalist beige canvas tote bag with inner security pocket. Effortlessly chic for campus and casual hangouts.',
-                'description' => '<p>A timeless neutral piece from Moutoshi Handbag. Made from eco-friendly unbleached premium canvas that complements any outfit.</p>
+                'primary_image' => 'assets/images/bags/moutoshi-bag-05.jpg',
+                'short_description' => 'Multi-compartment canvas varsity bag with front utility organizer pockets, strong dual handles, and high-capacity storage.',
+                'description' => '<p>Engineered for students and busy professionals. Front pockets provide effortless quick access to smartphone, keys, cards, sanitizer, and pens, while the roomy interior accommodates books and electronics.</p>
                 <ul>
-                    <li>Dimensions: 38cm x 35cm x 10cm</li>
-                    <li>Inner zippered pocket and magnetic snap closure</li>
-                    <li>Lightweight yet capable of carrying heavy loads</li>
+                    <li>Outer: 2 large front utility organizer slip pockets</li>
+                    <li>Inner: Deep lined compartment with zip closure</li>
+                    <li>Carrying: Dual handles for both hand-carry & shoulder wear</li>
+                    <li>Eco-Friendly: Machine washable heavy-duty natural fabric</li>
                 </ul>',
                 'is_featured' => true,
                 'is_sale' => true,
                 'is_new' => true,
                 'images' => [
-                    'assets/images/bags/canvas-tote-beige.jpg',
-                    'assets/images/bags/canvas-tote-black.jpg',
+                    'assets/images/bags/moutoshi-bag-05.jpg',
+                    'assets/images/bags/moutoshi-bag-08.jpg',
+                    'assets/images/bags/moutoshi-bag-11.jpg',
+                    'assets/images/bags/moutoshi-bag-13.jpg',
                 ],
                 'variants' => [
-                    ['name' => 'Natural Beige', 'color_code' => '#f2ebd9'],
-                    ['name' => 'Classic Black', 'color_code' => '#1c1c1c'],
+                    ['name' => 'Off White', 'color_code' => '#f8f6f0'],
+                    ['name' => 'Natural Beige', 'color_code' => '#eee8dc'],
                 ],
             ],
             [
-                'title' => 'College Varsity Multi-Pocket Canvas Shoulder Bag',
-                'slug' => 'moutoshi-college-varsity-canvas-bag',
+                'title' => 'Moutoshi Botanical Blue Blossom Canvas Tote',
+                'slug' => 'moutoshi-botanical-blue-blossom-canvas-tote',
                 'category_slug' => 'shoulder-bags',
-                'sku' => 'MH-SH-003',
-                'price' => 950.00,
-                'compare_at_price' => 1400.00,
+                'sku' => 'MH-BLU-003',
+                'price' => 790.00,
+                'compare_at_price' => 1200.00,
                 'stock' => 38,
-                'primary_image' => 'assets/images/bags/canvas-college-varsity.jpg',
-                'short_description' => 'Trendy campus-ready shoulder bag with front utility pockets, dual handle straps, and smooth zipper closure.',
-                'description' => '<p>The ultimate university and college bag by Moutoshi Handbag. Features multiple quick-access front pockets for pens, sanitizer, phone, and chargers.</p>
-                <ul>
-                    <li>Multiple outer front pockets</li>
-                    <li>Secure top zipper closure</li>
-                    <li>Dual carrying straps: hand-carry & shoulder</li>
-                </ul>',
+                'primary_image' => 'assets/images/bags/moutoshi-bag-06.jpg',
+                'short_description' => 'Contrasting botanical floral motif on premium textured canvas. A chic artistic statement piece.',
+                'description' => '<p>Artistic and refreshing. Handcrafted with precision embroidery, making it a standout accessory for brunch, university, and evening hangouts.</p>',
                 'is_featured' => true,
                 'is_sale' => true,
                 'is_new' => true,
                 'images' => [
-                    'assets/images/bags/canvas-college-varsity.jpg',
-                    'assets/images/bags/canvas-tote-black.jpg',
+                    'assets/images/bags/moutoshi-bag-06.jpg',
+                    'assets/images/bags/moutoshi-bag-09.jpg',
+                    'assets/images/bags/moutoshi-bag-12.jpg',
                 ],
                 'variants' => [
-                    ['name' => 'Varsity White & Black', 'color_code' => '#2b2b2b'],
-                    ['name' => 'Navy Blue', 'color_code' => '#1f2937'],
+                    ['name' => 'Blue Blossom White', 'color_code' => '#2b4c7e'],
+                    ['name' => 'Ivory Cream', 'color_code' => '#f5f3ed'],
                 ],
             ],
             [
-                'title' => 'Minimalist Structured Ladies Shoulder Bag',
-                'slug' => 'moutoshi-minimalist-structured-shoulder-bag',
-                'category_slug' => 'shoulder-bags',
-                'sku' => 'MH-SH-004',
-                'price' => 1450.00,
-                'compare_at_price' => 2200.00,
+                'title' => 'Moutoshi Floral Aesthetic Duo Canvas Set (2-in-1)',
+                'slug' => 'moutoshi-floral-aesthetic-duo-canvas-set',
+                'category_slug' => 'sync-set-bags',
+                'sku' => 'MH-DUO-004',
+                'price' => 1350.00,
+                'compare_at_price' => 1950.00,
                 'stock' => 25,
-                'primary_image' => 'assets/images/bags/minimalist-shoulder-bag.jpg',
-                'short_description' => 'Sleek geometric silhouette crafted with premium vegan leather and comfortable wide strap.',
-                'description' => '<p>Clean lines and contemporary elegance. Tailored for meetings, dinners, and everyday sophisticated styling.</p>',
+                'primary_image' => 'assets/images/bags/moutoshi-bag-01.jpg',
+                'short_description' => 'Matching 2-in-1 set: Large work tote plus compact day bag. Coordinated floral aesthetics in one combo.',
+                'description' => '<p>Double the elegance! Get both the large high-capacity tote and the matching day bag at a special combo discount price.</p>',
                 'is_featured' => true,
                 'is_sale' => true,
                 'is_new' => false,
                 'images' => [
-                    'assets/images/bags/minimalist-shoulder-bag.jpg',
+                    'assets/images/bags/moutoshi-bag-01.jpg',
+                    'assets/images/bags/moutoshi-bag-04.jpg',
+                    'assets/images/bags/moutoshi-bag-15.jpg',
                 ],
                 'variants' => [
-                    ['name' => 'Ivory Cream', 'color_code' => '#f3eee3'],
-                    ['name' => 'Midnight Black', 'color_code' => '#111111'],
+                    ['name' => 'Duo Natural Cream', 'color_code' => '#f2ede4'],
                 ],
             ],
             [
-                'title' => 'Olive Green Daily Utility Canvas Tote',
-                'slug' => 'moutoshi-olive-green-daily-utility-tote',
-                'category_slug' => 'tote-bags',
-                'sku' => 'MH-TT-005',
-                'price' => 890.00,
-                'compare_at_price' => 1300.00,
+                'title' => 'Moutoshi Outdoor Lifestyle Shoulder Tote',
+                'slug' => 'moutoshi-outdoor-lifestyle-shoulder-tote',
+                'category_slug' => 'women',
+                'sku' => 'MH-OUT-005',
+                'price' => 780.00,
+                'compare_at_price' => 1180.00,
                 'stock' => 30,
-                'primary_image' => 'assets/images/bags/olive-green-tote.jpg',
-                'short_description' => 'Earth-toned army olive canvas tote with reinforced bottom base and spacious interior.',
-                'description' => '<p>A stunning earthy olive tone that stands out. Made from washable canvas with durable stitching.</p>',
+                'primary_image' => 'assets/images/bags/moutoshi-bag-16.jpg',
+                'short_description' => 'Lightweight, sunny day canvas bag with wide comfortable straps and reinforced bottom.',
+                'description' => '<p>Crafted for sunny weekend walks, travel trips, and everyday campus commutes.</p>',
                 'is_featured' => true,
                 'is_sale' => true,
                 'is_new' => true,
                 'images' => [
-                    'assets/images/bags/olive-green-tote.jpg',
+                    'assets/images/bags/moutoshi-bag-16.jpg',
+                    'assets/images/bags/moutoshi-bag-17.jpg',
+                    'assets/images/bags/moutoshi-bag-18.jpg',
                 ],
                 'variants' => [
-                    ['name' => 'Olive Green', 'color_code' => '#556b2f'],
-                    ['name' => 'Khaki Tan', 'color_code' => '#c2b280'],
+                    ['name' => 'Garden White', 'color_code' => '#faf8f5'],
                 ],
             ],
             [
-                'title' => 'Aesthetic French Linen Everyday Shopper',
-                'slug' => 'moutoshi-aesthetic-linen-shopper',
+                'title' => 'Moutoshi Minimalist Pure Canvas Daily Shopper',
+                'slug' => 'moutoshi-minimalist-pure-canvas-shopper',
                 'category_slug' => 'tote-bags',
-                'sku' => 'MH-TT-006',
-                'price' => 820.00,
-                'compare_at_price' => 1190.00,
+                'sku' => 'MH-MIN-006',
+                'price' => 690.00,
+                'compare_at_price' => 990.00,
                 'stock' => 35,
-                'primary_image' => 'assets/images/bags/aesthetic-linen-shopper.jpg',
-                'short_description' => 'Breathable textured linen blend shopper bag. Effortless, lightweight, and eco-friendly.',
-                'description' => '<p>Crafted for weekend farmers markets, relaxed brunch, or beach days. Soft texture with high durability.</p>',
+                'primary_image' => 'assets/images/bags/moutoshi-bag-10.jpg',
+                'short_description' => 'Clean aesthetic minimalist canvas shopper. Ultra-durable, washable, and eco-friendly.',
+                'description' => '<p>The ultimate clean-aesthetic daily shopper. Washable heavy cotton canvas designed to last for years.</p>',
                 'is_featured' => true,
                 'is_sale' => true,
                 'is_new' => false,
                 'images' => [
-                    'assets/images/bags/aesthetic-linen-shopper.jpg',
+                    'assets/images/bags/moutoshi-bag-10.jpg',
+                    'assets/images/bags/moutoshi-bag-19.jpg',
+                    'assets/images/bags/moutoshi-bag-20.jpg',
                 ],
                 'variants' => [
-                    ['name' => 'Linen Oatmeal', 'color_code' => '#e3dac9'],
-                    ['name' => 'Pure Black', 'color_code' => '#1a1a1a'],
+                    ['name' => 'Pure Natural', 'color_code' => '#e8e2d5'],
                 ],
             ],
             [
-                'title' => 'Croissant Dumpling Soft Crossbody Bag',
-                'slug' => 'moutoshi-croissant-dumpling-crossbody-bag',
+                'title' => 'Moutoshi Embroidered Garden Crossbody Tote',
+                'slug' => 'moutoshi-embroidered-garden-crossbody-tote',
                 'category_slug' => 'crossbody-bags',
-                'sku' => 'MH-CB-007',
-                'price' => 1250.00,
-                'compare_at_price' => 1850.00,
+                'sku' => 'MH-CRS-007',
+                'price' => 820.00,
+                'compare_at_price' => 1200.00,
                 'stock' => 40,
-                'primary_image' => 'assets/images/bags/croissant-dumpling-bag.jpg',
-                'short_description' => 'Viral crescent moon dumpling bag. Ultra-soft waterproof material with wide adjustable crossbody strap.',
-                'description' => '<p>Lightweight yet roomy enough for your wallet, makeup, sunglasses, and phone. A modern streetwear essential.</p>',
+                'primary_image' => 'assets/images/bags/moutoshi-bag-21.jpg',
+                'short_description' => 'Crossbody canvas bag with adjustable strap and delicate botanical needlework.',
+                'description' => '<p>Comfortable across your body with effortless access to all your essentials.</p>',
                 'is_featured' => true,
                 'is_sale' => true,
                 'is_new' => true,
                 'images' => [
-                    'assets/images/bags/croissant-dumpling-bag.jpg',
+                    'assets/images/bags/moutoshi-bag-21.jpg',
+                    'assets/images/bags/moutoshi-bag-22.jpg',
+                    'assets/images/bags/moutoshi-bag-23.jpg',
                 ],
                 'variants' => [
-                    ['name' => 'Matte Black', 'color_code' => '#181818'],
-                    ['name' => 'Warm Beige', 'color_code' => '#e8dfd3'],
+                    ['name' => 'Garden Floral', 'color_code' => '#efebe3'],
                 ],
             ],
             [
-                'title' => 'Classic Structured Top-Handle Leather Handbag',
-                'slug' => 'moutoshi-classic-structured-leather-handbag',
+                'title' => 'Moutoshi Handcrafted Heritage Canvas Handbag',
+                'slug' => 'moutoshi-handcrafted-heritage-handbag',
                 'category_slug' => 'handbags',
-                'sku' => 'MH-HB-008',
-                'price' => 1850.00,
-                'compare_at_price' => 2650.00,
+                'sku' => 'MH-HND-008',
+                'price' => 890.00,
+                'compare_at_price' => 1350.00,
                 'stock' => 22,
-                'primary_image' => 'assets/images/bags/classic-leather-handbag.jpg',
-                'short_description' => 'Sophisticated structured handbag with gold-plated hardware, protective base studs, and detachable sling.',
-                'description' => '<p>Pure elegance for formal events, parties, and executive workdays. Built with premium scratch-resistant leather.</p>',
+                'primary_image' => 'assets/images/bags/moutoshi-bag-24.jpg',
+                'short_description' => 'Structured hand-carry canvas handbag with top handles and protective bottom gusset.',
+                'description' => '<p>Heritage craftsmanship meets contemporary chic. Made with handpicked canvas and detailed stitching.</p>',
                 'is_featured' => true,
                 'is_sale' => true,
                 'is_new' => false,
                 'images' => [
-                    'assets/images/bags/classic-leather-handbag.jpg',
+                    'assets/images/bags/moutoshi-bag-24.jpg',
+                    'assets/images/bags/moutoshi-bag-25.jpg',
+                    'assets/images/bags/moutoshi-bag-26.jpg',
                 ],
                 'variants' => [
-                    ['name' => 'Classic Black', 'color_code' => '#141414'],
-                    ['name' => 'Rich Cognac', 'color_code' => '#9a5327'],
+                    ['name' => 'Warm Cream', 'color_code' => '#f3ede0'],
                 ],
             ],
         ];
@@ -395,8 +403,8 @@ class PatcheeDataSeeder extends Seeder
                 'delivery_address' => 'House 42, Road 11, Dhanmondi, Dhaka',
                 'city_zone' => 'inside_dhaka',
                 'delivery_charge' => 60.00,
-                'subtotal' => 850.00,
-                'total' => 910.00,
+                'subtotal' => 750.00,
+                'total' => 810.00,
                 'payment_method' => 'cash_on_delivery',
                 'payment_status' => 'pending',
                 'order_status' => 'shipped',
@@ -405,13 +413,13 @@ class PatcheeDataSeeder extends Seeder
         );
 
         OrderItem::updateOrCreate(
-            ['order_id' => $order1->id, 'product_name' => 'Moutoshi Signature Canvas Tote Bag (Black)'],
+            ['order_id' => $order1->id, 'product_name' => 'Moutoshi Hand-Embroidered Wildflower Canvas Tote'],
             [
-                'price' => 850.00,
+                'price' => 750.00,
                 'quantity' => 1,
-                'variant_name' => 'Classic Black',
-                'total' => 850.00,
-                'image_url' => 'assets/images/bags/canvas-tote-black.jpg',
+                'variant_name' => 'Daisy White',
+                'total' => 750.00,
+                'image_url' => 'assets/images/bags/moutoshi-bag-02.jpg',
             ]
         );
     }

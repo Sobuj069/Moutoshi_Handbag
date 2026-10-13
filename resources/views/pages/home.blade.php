@@ -157,27 +157,27 @@
         </div>
     </section>
 
-    <!-- 5. EDITORIAL SPLIT PROMO BANNER (BAG THE VIBE) -->
+    <!-- 5. EDITORIAL SPLIT PROMO BANNER (HANDCRAFTED & UTILITY) -->
     <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             
             <!-- Left Banner -->
             <div class="relative group overflow-hidden bg-neutral-900 min-h-[380px] sm:min-h-[460px] flex items-end p-8 text-white">
-                <img src="https://thepatchee.com/cdn/shop/files/d0783770-4668-4b3e-a3b5-2bbc89c2869f.jpg?v=1776151580&width=1000" 
-                     alt="Shoulder Bags" 
+                <img src="{{ asset('assets/images/bags/moutoshi-bag-02.jpg') }}" 
+                     alt="Hand-Embroidered Wildflower Tote" 
                      class="absolute inset-0 w-full h-full object-cover object-center brightness-75 group-hover:scale-105 transition duration-700">
                 <div class="relative z-10 space-y-3">
-                    <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#c9a66b] block">ICONIC ESSENTIALS</span>
+                    <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#c9a66b] block">HANDCRAFTED AESTHETICS</span>
                     <h3 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-wider text-white font-sans">
-                        THE CROISSANT & SHOULDER DROP
+                        THE WILDFLOWER EMBROIDERY DROP
                     </h3>
                     <p class="text-xs text-neutral-300 max-w-md font-light leading-relaxed">
-                        Soft dumpling silhouettes, lightweight waterproof leather, crafted for all day comfort.
+                        Exquisite botanical needlework on heavy unbleached cotton canvas. Lightweight yet built to carry your daily essentials.
                     </p>
                     <div class="pt-2">
-                        <a href="{{ route('shop.index', 'shoulder-bags') }}" 
+                        <a href="{{ route('shop.index', 'tote-bags') }}" 
                            class="inline-block bg-white text-[#1c1c1c] text-xs font-bold tracking-[0.18em] uppercase py-3 px-6 hover:bg-[#c9a66b] hover:text-white transition">
-                            SHOP SHOULDER BAGS
+                            EXPLORE EMBROIDERED TOTES
                         </a>
                     </div>
                 </div>
@@ -185,21 +185,21 @@
 
             <!-- Right Banner -->
             <div class="relative group overflow-hidden bg-neutral-900 min-h-[380px] sm:min-h-[460px] flex items-end p-8 text-white">
-                <img src="https://thepatchee.com/cdn/shop/files/654a7e83-c512-4ec1-8ebf-af44c488e776.png?v=1781362688&width=800" 
-                     alt="Executive Wallets" 
+                <img src="{{ asset('assets/images/bags/moutoshi-bag-05.jpg') }}" 
+                     alt="Multi-Pocket Utility Canvas Bag" 
                      class="absolute inset-0 w-full h-full object-cover object-center brightness-75 group-hover:scale-105 transition duration-700">
                 <div class="relative z-10 space-y-3">
-                    <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#c9a66b] block">SMART ACCESSORIES</span>
+                    <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#c9a66b] block">CAMPUS & WORKSPACE UTILITY</span>
                     <h3 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-wider text-white font-sans">
-                        RFID POP-UP WALLETS & CLUTCHES
+                        MULTI-POCKET CANVAS TOTES
                     </h3>
                     <p class="text-xs text-neutral-300 max-w-md font-light leading-relaxed">
-                        Anti-skimming aluminum safety with 1-click staircase card pop-up mechanism.
+                        Dedicated quick-access front pockets for phone, keys & cards. Fits 15-inch laptops and notebooks with ease.
                     </p>
                     <div class="pt-2">
-                        <a href="{{ route('shop.index', 'wallets-card-holders') }}" 
+                        <a href="{{ route('shop.index', 'shoulder-bags') }}" 
                            class="inline-block bg-white text-[#1c1c1c] text-xs font-bold tracking-[0.18em] uppercase py-3 px-6 hover:bg-[#c9a66b] hover:text-white transition">
-                            EXPLORE WALLETS
+                            SHOP UTILITY BAGS
                         </a>
                     </div>
                 </div>
@@ -224,7 +224,117 @@
         </div>
     </section>
 
-    <!-- 7. VALUE PROPOSITIONS & TRUST BADGES (TEXT WITH ICONS) -->
+    <!-- 7. LIVE VIDEO SHOWCASE (REAL REELS OF MOUTOSHI BAGS) -->
+    <section class="py-16 bg-[#161616] text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-10 gap-4 text-center sm:text-left">
+                <div>
+                    <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#c9a66b] block mb-1">REAL QUALITY • LIVE REELS</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-[0.15em] font-sans">
+                        SEE OUR BAGS IN REAL LIFE
+                    </h2>
+                    <p class="text-xs text-neutral-400 mt-1 max-w-xl">ভিডিওতে দেখুন আমাদের প্রতিটি ক্যানভাস টোট ব্যাগের খাঁটি কাপড়, নিখুঁত এম্ব্রয়ডারি ফিনিশিং এবং ধারণক্ষমতা।</p>
+                </div>
+                <a href="{{ route('shop.index', 'all') }}" 
+                   class="text-xs font-bold tracking-[0.18em] uppercase text-white hover:text-[#c9a66b] transition flex items-center gap-1.5 pb-1 border-b-2 border-white hover:border-[#c9a66b]">
+                    <span>EXPLORE ALL BAGS</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Video Card 1 -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-sm overflow-hidden group shadow-lg flex flex-col">
+                    <div class="relative aspect-[9/16] bg-black overflow-hidden">
+                        <video src="{{ asset('assets/videos/bag-video-01.mp4') }}" 
+                               class="w-full h-full object-cover" 
+                               autoplay loop muted playsinline controls></video>
+                        <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-xs text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-xs text-[#c9a66b]">
+                            HD VIDEO
+                        </span>
+                    </div>
+                    <div class="p-4 flex flex-col justify-between flex-1">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white">Wildflower Embroidery</h4>
+                            <p class="text-[11px] text-neutral-400 mt-1">Detailed texture & floral threadwork</p>
+                        </div>
+                        <div class="pt-3 mt-3 border-t border-neutral-800 flex items-center justify-between">
+                            <span class="text-xs font-bold text-[#c9a66b]">৳ 750</span>
+                            <a href="{{ route('shop.index', 'tote-bags') }}" class="text-[11px] uppercase font-bold tracking-wider text-white hover:text-[#c9a66b] underline">View Bag</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Card 2 -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-sm overflow-hidden group shadow-lg flex flex-col">
+                    <div class="relative aspect-[9/16] bg-black overflow-hidden">
+                        <video src="{{ asset('assets/videos/bag-video-02.mp4') }}" 
+                               class="w-full h-full object-cover" 
+                               autoplay loop muted playsinline controls></video>
+                        <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-xs text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-xs text-[#c9a66b]">
+                            CAPACITY REEL
+                        </span>
+                    </div>
+                    <div class="p-4 flex flex-col justify-between flex-1">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white">Multi-Pocket Utility</h4>
+                            <p class="text-[11px] text-neutral-400 mt-1">Pockets for phone, pens & daily items</p>
+                        </div>
+                        <div class="pt-3 mt-3 border-t border-neutral-800 flex items-center justify-between">
+                            <span class="text-xs font-bold text-[#c9a66b]">৳ 850</span>
+                            <a href="{{ route('shop.index', 'tote-bags') }}" class="text-[11px] uppercase font-bold tracking-wider text-white hover:text-[#c9a66b] underline">View Bag</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Card 3 -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-sm overflow-hidden group shadow-lg flex flex-col">
+                    <div class="relative aspect-[9/16] bg-black overflow-hidden">
+                        <video src="{{ asset('assets/videos/bag-video-03.mp4') }}" 
+                               class="w-full h-full object-cover" 
+                               autoplay loop muted playsinline controls></video>
+                        <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-xs text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-xs text-[#c9a66b]">
+                            STYLING REEL
+                        </span>
+                    </div>
+                    <div class="p-4 flex flex-col justify-between flex-1">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white">Everyday Campus Look</h4>
+                            <p class="text-[11px] text-neutral-400 mt-1">Comfortable wide shoulder strap</p>
+                        </div>
+                        <div class="pt-3 mt-3 border-t border-neutral-800 flex items-center justify-between">
+                            <span class="text-xs font-bold text-[#c9a66b]">৳ 790</span>
+                            <a href="{{ route('shop.index', 'shoulder-bags') }}" class="text-[11px] uppercase font-bold tracking-wider text-white hover:text-[#c9a66b] underline">View Bag</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Card 4 -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-sm overflow-hidden group shadow-lg flex flex-col">
+                    <div class="relative aspect-[9/16] bg-black overflow-hidden">
+                        <video src="{{ asset('assets/videos/bag-video-04.mp4') }}" 
+                               class="w-full h-full object-cover" 
+                               autoplay loop muted playsinline controls></video>
+                        <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-xs text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-xs text-[#c9a66b]">
+                            360° SHOWCASE
+                        </span>
+                    </div>
+                    <div class="p-4 flex flex-col justify-between flex-1">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white">Floral Duo Set</h4>
+                            <p class="text-[11px] text-neutral-400 mt-1">2-in-1 matching aesthetic bag duo</p>
+                        </div>
+                        <div class="pt-3 mt-3 border-t border-neutral-800 flex items-center justify-between">
+                            <span class="text-xs font-bold text-[#c9a66b]">৳ 1,350</span>
+                            <a href="{{ route('shop.index', 'sync-set-bags') }}" class="text-[11px] uppercase font-bold tracking-wider text-white hover:text-[#c9a66b] underline">View Bag</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. VALUE PROPOSITIONS & TRUST BADGES -->
     <section class="bg-[#faf8f5] py-14 border-y border-neutral-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
@@ -265,7 +375,7 @@
                     </div>
                     <div>
                         <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-900 font-sans">100% QUALITY PROMISE</h4>
-                        <p class="text-xs text-neutral-500 mt-1">Premium vegan leather, metallic zippers, and reinforced straps.</p>
+                        <p class="text-xs text-neutral-500 mt-1">Heavy-duty washable canvas, durable stitching & reinforced handles.</p>
                     </div>
                 </div>
 
@@ -273,33 +383,34 @@
         </div>
     </section>
 
-    <!-- 8. COMMUNITY & INSTAGRAM LOOKBOOK FEED -->
+    <!-- 9. COMMUNITY & REAL LOOKBOOK FEED -->
     <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-8">
             <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#c9a66b] block mb-1">#MOUTOSHIHANDBAG</span>
             <h2 class="text-2xl font-extrabold uppercase tracking-[0.15em] text-neutral-900 font-sans">
                 DISCOVER YOUR STYLE AT HANDBAG HAVEN
             </h2>
+            <p class="text-xs text-neutral-500 mt-1">আমাদের আসল কাস্টমার ও ফটোশুটের ছবিসমূহ</p>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="{{ asset('assets/images/bags/canvas-tote-black.jpg') }}" alt="Moutoshi Canvas Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <div class="aspect-[3/4] overflow-hidden bg-neutral-100 group shadow-xs">
+                <img src="{{ asset('assets/images/bags/moutoshi-bag-02.jpg') }}" alt="Moutoshi Wildflower Bag" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
-            <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="{{ asset('assets/images/bags/canvas-tote-beige.jpg') }}" alt="Moutoshi Beige Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <div class="aspect-[3/4] overflow-hidden bg-neutral-100 group shadow-xs">
+                <img src="{{ asset('assets/images/bags/moutoshi-bag-05.jpg') }}" alt="Moutoshi Multi-Pocket Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
-            <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="{{ asset('assets/images/bags/canvas-college-varsity.jpg') }}" alt="Moutoshi Varsity Bag" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <div class="aspect-[3/4] overflow-hidden bg-neutral-100 group shadow-xs">
+                <img src="{{ asset('assets/images/bags/moutoshi-bag-06.jpg') }}" alt="Moutoshi Blue Blossom Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
-            <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="{{ asset('assets/images/bags/minimalist-shoulder-bag.jpg') }}" alt="Moutoshi Minimalist Bag" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <div class="aspect-[3/4] overflow-hidden bg-neutral-100 group shadow-xs">
+                <img src="{{ asset('assets/images/bags/moutoshi-bag-12.jpg') }}" alt="Moutoshi Outdoor Canvas Bag" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
-            <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="{{ asset('assets/images/bags/olive-green-tote.jpg') }}" alt="Moutoshi Olive Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <div class="aspect-[3/4] overflow-hidden bg-neutral-100 group shadow-xs">
+                <img src="{{ asset('assets/images/bags/moutoshi-bag-13.jpg') }}" alt="Moutoshi Hand-Carry Shopper" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
-            <div class="aspect-square overflow-hidden bg-neutral-100 group">
-                <img src="{{ asset('assets/images/bags/croissant-dumpling-bag.jpg') }}" alt="Moutoshi Croissant Bag" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <div class="aspect-[3/4] overflow-hidden bg-neutral-100 group shadow-xs">
+                <img src="{{ asset('assets/images/bags/moutoshi-bag-16.jpg') }}" alt="Moutoshi Lifestyle Tote" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
         </div>
     </section>

@@ -1,0 +1,63 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --font-heading: 'Jost', sans-serif;
+    --font-sans: 'Jost', system-ui, sans-serif;
+    
+    --color-patchee-dark: #1c1c1c;
+    --color-patchee-gold: #c9a66b;
+    --color-patchee-cream: #fbf9f5;
+    --color-patchee-border: #e8e8e8;
+    --color-patchee-muted: #737373;
+}
+
+/* Custom Prestige-Style Animations & Typography */
+@keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+    display: flex;
+    width: 200%;
+    animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+    animation-play-state: paused;
+}
+
+/* Typography specifics matching Shopify Prestige */
+body {
+    font-family: 'Jost', sans-serif;
+    color: #1c1c1c;
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .heading-font {
+    font-family: 'Jost', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #c9a66b;
+}
+
+[x-cloak] {
+    display: none !important;
+}

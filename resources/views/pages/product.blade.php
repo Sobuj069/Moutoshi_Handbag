@@ -72,12 +72,12 @@
                          alt="{{ $product->title }}" 
                          class="w-full h-full object-cover object-center transition duration-500 hover:scale-105 cursor-zoom-in">
 
-                    <!-- Brand Watermark Logo Badge (Top Right Corner Circular) -->
-                    <div class="absolute top-4 right-4 z-10 pointer-events-none select-none">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/95 backdrop-blur-xs shadow-md border-2 border-white flex items-center justify-center p-2.5 sm:p-3">
-                            <img src="{{ asset('assets/images/logo.png') }}" 
+                    <!-- Brand Watermark (Top Right Corner Circular Watermark) -->
+                    <div class="absolute top-4 right-4 z-10 pointer-events-none select-none transition-all duration-300 opacity-60 hover:opacity-90">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/25 backdrop-blur-[1px] border border-white/40 flex items-center justify-center p-2.5 sm:p-3 shadow-2xs">
+                            <img src="{{ asset('assets/images/logo-black-transparent.png') }}" 
                                  alt="Moutoshi Handbag" 
-                                 class="w-full h-auto max-h-full object-contain">
+                                 class="w-full h-auto max-h-full object-contain filter drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
                         </div>
                     </div>
                 </div>

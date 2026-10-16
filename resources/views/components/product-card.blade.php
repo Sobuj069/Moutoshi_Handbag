@@ -38,12 +38,12 @@
             @endif
         </a>
 
-        <!-- Brand Watermark Logo Badge (Top Right Corner Circular) -->
-        <div class="absolute top-2.5 right-2.5 z-10 pointer-events-none select-none transition-all duration-300 group-hover:scale-105">
-            <div class="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/95 backdrop-blur-xs shadow-md border-2 border-white flex items-center justify-center p-1.5 sm:p-2">
-                <img src="{{ asset('assets/images/logo.png') }}" 
+        <!-- Brand Watermark (Top Right Corner Circular Watermark) -->
+        <div class="absolute top-2.5 right-2.5 z-10 pointer-events-none select-none transition-all duration-300 opacity-60 group-hover:opacity-90">
+            <div class="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/25 backdrop-blur-[1px] border border-white/40 flex items-center justify-center p-1.5 sm:p-2 shadow-2xs">
+                <img src="{{ asset('assets/images/logo-black-transparent.png') }}" 
                      alt="Moutoshi Handbag" 
-                     class="w-full h-auto max-h-full object-contain">
+                     class="w-full h-auto max-h-full object-contain filter drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
             </div>
         </div>
 

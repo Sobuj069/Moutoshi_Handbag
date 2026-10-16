@@ -480,6 +480,24 @@
                                     </span>
                                 </div>
                             </div>
+
+                            <!-- Multiple gallery photos preview -->
+                            <div x-show="aiData?.gallery_images && aiData?.gallery_images.length > 0" class="pt-2 border-t border-neutral-200">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[10px] font-bold text-neutral-700 uppercase tracking-wider">
+                                        + <span x-text="aiData.gallery_images.length"></span> Additional Gallery Photos:
+                                    </span>
+                                    <span class="text-[9px] text-emerald-700 font-mono font-bold">Original High-Res</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto p-1 bg-white border border-neutral-200 rounded-xs">
+                                    <template x-for="(g, idx) in aiData.gallery_images" :key="idx">
+                                        <div class="relative border border-emerald-400 rounded-xs overflow-hidden bg-neutral-100 shadow-2xs">
+                                            <img :src="g.url" class="w-12 h-12 object-cover">
+                                            <span class="absolute bottom-0 inset-x-0 bg-black/80 text-[7px] text-emerald-200 text-center font-mono py-0.2" x-text="g.width + 'x' + g.height"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

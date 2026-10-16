@@ -100,4 +100,42 @@ class AdminTest extends TestCase
             $this->assertFalse(\App\Models\Product::find($id)->is_active);
         }
     }
+
+    public function test_admin_can_create_product_with_multiple_gallery_images(): void
+    {
+        $admin = User::where('email', 'admin@thepatchee.com')->first();
+        $category = \App\Models\Category::first();
+
+        \Illuminate\Support\Facades\Storage::fake('public');
+
+        $primary = \Illuminate\Http\UploadedFile::fake()->image('primary.jpg', 600, 600);
+        $gallery1 = \Illuminate\Http\UploadedFile::fake()->image('gallery1.jpg', 800, 800);
+        $gallery2 = \Illuminate\Http\UploadedFile::fake()->image('gallery2.jpg', 800, 800);
+
+        $response = $this->actingAs($admin)->post('/admin/products', [
+            'title' => 'Test Multi-Image Handbag',
+            'category_id' => $category->id,
+            'price' => 1200,
+            'stock' => 20,
+            'image_file' => $primary,
+            'gallery_images' => [$gallery1, $gallery2],
+            'is_active' => 1,
+        ]);
+
+        $response->assertRedirect('/admin/products');
+
+        $product = \App\Models\Product::where('title', 'Test Multi-Image Handbag')->first();
+        $this->assertNotNull($product);
+        $this->assertNotEmpty($product->primary_image);
+        $this->assertCount(2, $product->images);
+
+        // Test delete gallery image via route
+        $imageToDelete = $product->images->first();
+        $delResponse = $this->actingAs($admin)->deleteJson('/admin/products/gallery/' . $imageToDelete->id);
+        $delResponse->assertStatus(200);
+        $delResponse->assertJson(['success' => true]);
+
+        $this->assertDatabaseMissing('product_images', ['id' => $imageToDelete->id]);
+        $this->assertCount(1, $product->fresh()->images);
+    }
 }

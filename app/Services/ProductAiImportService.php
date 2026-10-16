@@ -69,7 +69,7 @@ class ProductAiImportService
         }
 
         $primaryImage = $downloadedImages[0];
-        $galleryImages = array_slice($downloadedImages, 1, 4);
+        $galleryImages = array_slice($downloadedImages, 1);
 
         // Generate structured product attributes via Gemini AI
         $categories = Category::all(['id', 'name', 'slug']);
@@ -167,42 +167,64 @@ class ProductAiImportService
                 $author = trim($oembed['author_name'] ?? '');
                 if (!empty($oembed['thumbnail_url'])) {
                     $thumb = $oembed['thumbnail_url'];
-                    // High-res upgrades
                     $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/originals/', $thumb);
+                    $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/1200x/', $thumb);
                     $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/736x/', $thumb);
                     $imageCandidates[] = $thumb;
                 }
             }
         }
 
-        // Fast SSR title & image fallback using Googlebot User-Agent
-        if (empty($title) || strlen($title) < 5 || empty($imageCandidates)) {
-            $ch = curl_init($effectiveUrl);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
-            curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            $html = (string) curl_exec($ch);
-            curl_close($ch);
+        // Fetch SSR HTML to extract all multiple photos, carousel slides, and original HD assets
+        $ch = curl_init($effectiveUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $html = (string) curl_exec($ch);
+        curl_close($ch);
 
-            if ($html) {
-                if (preg_match('/<title[^>]*>(.*?)<\/title>/is', $html, $m)) {
-                    $rawTitle = trim(html_entity_decode($m[1], ENT_QUOTES, 'UTF-8'));
-                    // Remove trailing " | Pinterest" or similar
-                    $cleanTitle = preg_replace('/\s*\|\s*Pinterest.*$/i', '', $rawTitle);
-                    if ($cleanTitle && strlen($cleanTitle) > 3) {
-                        $title = $cleanTitle;
-                    }
+        if ($html) {
+            if (empty($title) && preg_match('/<title[^>]*>(.*?)<\/title>/is', $html, $m)) {
+                $rawTitle = trim(html_entity_decode($m[1], ENT_QUOTES, 'UTF-8'));
+                $cleanTitle = preg_replace('/\s*\|\s*Pinterest.*$/i', '', $rawTitle);
+                if ($cleanTitle && strlen($cleanTitle) > 3) {
+                    $title = $cleanTitle;
                 }
+            }
 
-                if (empty($imageCandidates) && preg_match('/<meta[^>]+property=["\']og:image["\'][^>]+content=["\'](.*?)["\']/i', $html, $m)) {
-                    $ogImg = trim($m[1]);
-                    if ($ogImg) {
-                        $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/originals/', $ogImg);
-                        $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/736x/', $ogImg);
-                        $imageCandidates[] = $ogImg;
-                    }
+            // 1. Parse __PWS_DATA__ JSON for Carousel / Story / Multi-image Pin data
+            if (preg_match('/<script[^>]*id=["\']__PWS_DATA__[^>]*>(.*?)<\/script>/is', $html, $mJson)) {
+                $pwsData = json_decode($mJson[1], true);
+                if (is_array($pwsData)) {
+                    array_walk_recursive($pwsData, function ($val, $key) use (&$imageCandidates) {
+                        if (is_string($val) && str_contains($val, 'i.pinimg.com') && preg_match('/\.(jpg|jpeg|png|webp)/i', $val)) {
+                            if (!preg_match('/(avatar|profile|badge|75x75|30x30|60x60)/i', $val)) {
+                                $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/originals/', $val);
+                                $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/1200x/', $val);
+                                $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/736x/', $val);
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 2. Extract all unique Pin image hashes directly from HTML
+            if (preg_match_all('#https?://i\.pinimg\.com/(?:originals|[0-9]+x|736x|1200x)/([a-f0-9]{2}/[a-f0-9]{2}/[a-f0-9]{2}/[a-f0-9]{32}\.(?:jpg|png|webp))#i', $html, $mHashes)) {
+                foreach (array_unique($mHashes[1]) as $hash) {
+                    $imageCandidates[] = "https://i.pinimg.com/originals/$hash";
+                    $imageCandidates[] = "https://i.pinimg.com/1200x/$hash";
+                    $imageCandidates[] = "https://i.pinimg.com/736x/$hash";
+                }
+            }
+
+            // 3. Fallback og:image
+            if (preg_match_all('/<meta[^>]+property=["\']og:image["\'][^>]+content=["\'](.*?)["\']/i', $html, $mOg)) {
+                foreach ($mOg[1] as $ogImg) {
+                    $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/originals/', $ogImg);
+                    $imageCandidates[] = preg_replace('/\/[0-9]+x\//', '/736x/', $ogImg);
+                    $imageCandidates[] = $ogImg;
                 }
             }
         }
@@ -340,18 +362,34 @@ class ProductAiImportService
             }
         }
 
-        // 2. OpenGraph & Meta Tags
+        // 2. OpenGraph & Meta Tags (extract ALL og:image tags)
         if (empty($title) && preg_match('/<meta property="og:title" content="([^"]+)"/i', $html, $m)) {
             $title = html_entity_decode($m[1], ENT_QUOTES, 'UTF-8');
         }
         if (empty($description) && preg_match('/<meta property="og:description" content="([^"]+)"/i', $html, $m)) {
             $description = html_entity_decode($m[1], ENT_QUOTES, 'UTF-8');
         }
-        if (preg_match('/<meta property="og:image" content="([^"]+)"/i', $html, $m)) {
-            $imageCandidates[] = $m[1];
+        if (preg_match_all('/<meta[^>]+property=["\']og:image["\'][^>]+content=["\'](.*?)["\']/i', $html, $mOg)) {
+            foreach ($mOg[1] as $img) {
+                $imageCandidates[] = $this->upgradeImageUrlToHighRes($this->resolveAbsoluteUrl($img, $url));
+            }
         }
-        if (preg_match('/<meta name="twitter:image" content="([^"]+)"/i', $html, $m)) {
-            $imageCandidates[] = $m[1];
+        if (preg_match_all('/<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\'](.*?)["\']/i', $html, $mTw)) {
+            foreach ($mTw[1] as $img) {
+                $imageCandidates[] = $this->upgradeImageUrlToHighRes($this->resolveAbsoluteUrl($img, $url));
+            }
+        }
+
+        // 3. Shopify / WooCommerce / E-Commerce Embedded JSON Product Images
+        if (preg_match_all('/"(?:images|media)"\s*:\s*\[([^\]]+)\]/is', $html, $mJsonImages)) {
+            foreach ($mJsonImages[1] as $chunk) {
+                if (preg_match_all('/["\']((?:https?:|\/\/)[^"\'\s<>]+\.(?:jpg|jpeg|png|webp)[^"\'\s<>]*)["\']/i', $chunk, $mUrls)) {
+                    foreach ($mUrls[1] as $candUrl) {
+                        $candUrl = stripslashes($candUrl);
+                        $imageCandidates[] = $this->upgradeImageUrlToHighRes($this->resolveAbsoluteUrl($candUrl, $url));
+                    }
+                }
+            }
         }
 
         // HTML Fallback for Title
@@ -368,11 +406,26 @@ class ProductAiImportService
             $description = html_entity_decode($m[1], ENT_QUOTES, 'UTF-8');
         }
 
-        // Find high-res images in <img> tags
-        if (preg_match_all('/<img[^>]+(data-zoom-image|data-high-res|data-src|src)=["\']([^"\']+\.(jpg|jpeg|png|webp)[^"\']*)["\']/i', $html, $imgMatches)) {
-            foreach ($imgMatches[2] as $src) {
+        // 4. Extract High-Res Images from srcset and data-srcset attributes
+        if (preg_match_all('/(?:srcset|data-srcset)=["\']([^"\']+)["\']/i', $html, $srcsets)) {
+            foreach ($srcsets[1] as $set) {
+                $parts = array_map('trim', explode(',', $set));
+                foreach ($parts as $p) {
+                    $pUrl = preg_split('/\s+/', trim($p))[0] ?? '';
+                    if ($pUrl && preg_match('/\.(jpg|jpeg|png|webp)/i', $pUrl)) {
+                        if (!preg_match('/(logo|icon|badge|avatar|sprite)/i', $pUrl)) {
+                            $imageCandidates[] = $this->upgradeImageUrlToHighRes($this->resolveAbsoluteUrl($pUrl, $url));
+                        }
+                    }
+                }
+            }
+        }
+
+        // 5. Find high-res images in <img> tags with zoom / high-res / gallery attributes
+        if (preg_match_all('/<img[^>]+(?:data-zoom-image|data-zoom|data-large_image|data-large|data-high-res|data-master|data-full|data-original|data-src|src)=["\']([^"\']+\.(jpg|jpeg|png|webp)[^"\']*)["\']/i', $html, $imgMatches)) {
+            foreach ($imgMatches[1] as $src) {
                 if (preg_match('/(logo|icon|badge|avatar|sprite)/i', $src)) continue;
-                $imageCandidates[] = $this->resolveAbsoluteUrl($src, $url);
+                $imageCandidates[] = $this->upgradeImageUrlToHighRes($this->resolveAbsoluteUrl($src, $url));
             }
         }
 
@@ -401,11 +454,15 @@ class ProductAiImportService
             if (empty($brand) && !empty($data['brand']['name'])) $brand = $data['brand']['name'];
             
             if (!empty($data['image'])) {
-                if (is_string($data['image'])) $images[] = $data['image'];
-                elseif (is_array($data['image'])) {
+                if (is_string($data['image'])) {
+                    $images[] = $this->upgradeImageUrlToHighRes($data['image']);
+                } elseif (is_array($data['image'])) {
                     foreach ($data['image'] as $im) {
-                        if (is_string($im)) $images[] = $im;
-                        elseif (is_array($im) && !empty($im['url'])) $images[] = $im['url'];
+                        if (is_string($im)) {
+                            $images[] = $this->upgradeImageUrlToHighRes($im);
+                        } elseif (is_array($im) && !empty($im['url'])) {
+                            $images[] = $this->upgradeImageUrlToHighRes($im['url']);
+                        }
                     }
                 }
             }
@@ -421,6 +478,33 @@ class ProductAiImportService
                 $this->parseJsonLd($v, $title, $desc, $brand, $price, $images);
             }
         }
+    }
+
+    /**
+     * Automatically upgrade image URLs from major platforms (Shopify, WordPress, Pinterest, Daraz) to original uncompressed high resolution.
+     */
+    protected function upgradeImageUrlToHighRes(string $url): string
+    {
+        $url = trim($url);
+
+        // Shopify: upgrade _100x100, _300x, _small, _medium, _compact, _large, _grande to _2048x2048
+        if (str_contains($url, 'cdn.shopify.com')) {
+            $url = preg_replace('/_(?:[0-9]+x[0-9]*|small|medium|compact|large|grande|pico|icon)(\.(?:jpg|jpeg|png|webp))/i', '_2048x2048$1', $url);
+        }
+        // WordPress/WooCommerce: strip -300x300, -768x768 thumbnail dimensions before extension
+        elseif (preg_match('/-[0-9]+x[0-9]+(\.(?:jpg|jpeg|png|webp))(?:\?.*)?$/i', $url)) {
+            $url = preg_replace('/-[0-9]+x[0-9]+(\.(?:jpg|jpeg|png|webp))/i', '$1', $url);
+        }
+        // Pinterest: upgrade /[0-9]+x/ to /originals/
+        elseif (str_contains($url, 'pinimg.com')) {
+            $url = preg_replace('/\/[0-9]+x\//i', '/originals/', $url);
+        }
+        // AliExpress / Daraz / Lazada
+        elseif (preg_match('/_[0-9]+x[0-9]+(\.(?:jpg|jpeg|png|webp))(?:\?.*)?$/i', $url)) {
+            $url = preg_replace('/_[0-9]+x[0-9]+(\.(?:jpg|jpeg|png|webp))/i', '$1', $url);
+        }
+
+        return $url;
     }
 
     /**
@@ -443,14 +527,15 @@ class ProductAiImportService
     }
 
     /**
-     * Download candidate images and verify high resolution (>= 300x300 px).
+     * Download candidate images and verify high resolution (>= 300x300 px) with content deduplication.
      */
     protected function downloadHighQualityImages(array $candidates): array
     {
         $downloaded = [];
+        $seenContentHashes = [];
 
         foreach ($candidates as $imgUrl) {
-            if (count($downloaded) >= 5) break;
+            if (count($downloaded) >= 8) break;
 
             $ch = curl_init($imgUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -468,6 +553,12 @@ class ProductAiImportService
                 continue;
             }
 
+            // Content hash deduplication to prevent duplicate images of different URL variations
+            $contentHash = md5($binary);
+            if (isset($seenContentHashes[$contentHash])) {
+                continue;
+            }
+
             $imgInfo = @getimagesizefromstring($binary);
             if (!$imgInfo) continue;
 
@@ -479,6 +570,8 @@ class ProductAiImportService
             if ($width < 300 || $height < 300) {
                 continue;
             }
+
+            $seenContentHashes[$contentHash] = true;
 
             $ext = match ($mime) {
                 'image/png' => 'png',
@@ -520,6 +613,11 @@ class ProductAiImportService
                 'bytes' => strlen($binary),
             ];
         }
+
+        // Sort so the highest resolution image is primary (#0), and others are gallery
+        usort($downloaded, function ($a, $b) {
+            return ($b['width'] * $b['height']) <=> ($a['width'] * $a['height']);
+        });
 
         return $downloaded;
     }

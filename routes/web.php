@@ -97,6 +97,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('products/ai-import/analyze', [AdminProductController::class, 'aiImportAnalyze'])->name('products.ai-import.analyze');
     Route::post('products/ai-import/quick-create', [AdminProductController::class, 'aiImportQuickCreate'])->name('products.ai-import.quick-create');
     Route::post('products/bulk-action', [AdminProductController::class, 'bulkAction'])->name('products.bulk-action');
+    Route::delete('products/gallery/{image}', [AdminProductController::class, 'deleteGalleryImage'])->name('products.gallery.destroy');
     Route::resource('products', AdminProductController::class);
 
     // Categories

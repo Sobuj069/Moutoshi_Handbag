@@ -25,19 +25,41 @@
                  activeTab: 'desc'
              }">
             
+            @php
+                $allImages = collect();
+                if ($product->primary_image_url) {
+                    $allImages->push((object)[
+                        'url' => $product->primary_image_url,
+                        'is_primary' => true
+                    ]);
+                }
+                foreach ($product->images as $img) {
+                    if ($img->url !== $product->primary_image_url) {
+                        $allImages->push((object)[
+                            'url' => $img->url,
+                            'is_primary' => false
+                        ]);
+                    }
+                }
+            @endphp
+
             <!-- Left: Gallery -->
             <div class="flex flex-col-reverse md:flex-row gap-4">
                 <!-- Thumbnails -->
-                <div class="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[550px] shrink-0 pb-2 md:pb-0">
-                    @foreach($product->images as $img)
-                        <button type="button" 
-                                @click="activeImage = '{{ $img->url }}'"
-                                class="w-16 h-20 sm:w-20 sm:h-24 shrink-0 border-2 overflow-hidden transition"
-                                :class="activeImage === '{{ $img->url }}' ? 'border-[#1c1c1c]' : 'border-transparent hover:border-neutral-300'">
-                            <img src="{{ $img->url }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
-                        </button>
-                    @endforeach
-                </div>
+                @if($allImages->count() > 1)
+                    <div class="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[550px] shrink-0 pb-2 md:pb-0 scrollbar-thin">
+                        @foreach($allImages as $item)
+                            <button type="button" 
+                                    @click="activeImage = '{{ $item->url }}'"
+                                    class="w-16 h-20 sm:w-20 sm:h-24 shrink-0 border-2 overflow-hidden transition cursor-pointer bg-neutral-100 rounded-xs"
+                                    :class="activeImage === '{{ $item->url }}' ? 'border-[#1c1c1c] ring-1 ring-[#1c1c1c]' : 'border-neutral-200 hover:border-neutral-400 opacity-75 hover:opacity-100'">
+                                <img src="{{ $item->url }}" alt="{{ $product->title }}" 
+                                     onerror="this.onerror=null; this.src='{{ asset('assets/images/logo.png') }}';"
+                                     class="w-full h-full object-cover">
+                            </button>
+                        @endforeach
+                    </div>
+                @endif
 
                 <!-- Main Active Image -->
                 <div class="flex-1 bg-[#f9f9f9] border border-neutral-200 overflow-hidden relative aspect-[4/5] max-h-[620px]">

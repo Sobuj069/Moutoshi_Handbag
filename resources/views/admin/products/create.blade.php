@@ -102,8 +102,28 @@
                                 <span class="bg-indigo-900/60 text-indigo-200 px-2 py-0.5 rounded-xs" x-text="formData.category_name"></span>
                                 <span class="bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded-xs" x-text="'SKU: ' + formData.sku"></span>
                                 <span class="bg-emerald-900/50 text-emerald-200 px-2 py-0.5 rounded-xs">🌟 High-Res Full Photo Saved</span>
+                                <span x-show="formData.gallery_images && formData.gallery_images.length > 0" class="bg-teal-900/60 text-teal-200 px-2 py-0.5 rounded-xs font-bold" x-text="'+ ' + formData.gallery_images.length + ' Gallery Photos'"></span>
                             </div>
                             <p class="text-[11px] text-neutral-300 line-clamp-2" x-text="formData.short_description"></p>
+                        </div>
+                    </div>
+
+                    <!-- AI Fetched Gallery Photos Strip -->
+                    <div x-show="formData.gallery_images && formData.gallery_images.length > 0" class="pt-3 border-t border-emerald-800/40">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <span>High-Res Gallery Photos Extracted (<span x-text="formData.gallery_images.length"></span>)</span>
+                            </span>
+                            <span class="text-[10px] text-emerald-400 font-mono">Original Quality</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2.5">
+                            <template x-for="(gImg, gIdx) in formData.gallery_images" :key="gIdx">
+                                <div class="relative group border-2 border-emerald-500/60 rounded-xs overflow-hidden bg-black/40 shadow-xs">
+                                    <img :src="gImg.url" class="w-16 h-16 object-cover">
+                                    <span class="absolute bottom-0 inset-x-0 bg-black/85 text-[8px] text-emerald-200 text-center font-mono py-0.5" x-text="gImg.width + 'x' + gImg.height"></span>
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -189,9 +209,90 @@
 
                     <!-- Primary Image File -->
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">Or Upload Image File Manually</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">Or Upload Primary Image Manually</label>
                         <input type="file" name="image_file" accept="image/*"
                                class="w-full text-xs px-4 py-2.5 border border-neutral-300 bg-neutral-50">
+                    </div>
+
+                    <!-- Multiple Gallery Images Section -->
+                    <div class="md:col-span-2 pt-2 pb-1 border-t border-neutral-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
+                                <svg class="w-4 h-4 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <span>Gallery Images (গ্যালারির একাধিক ছবি আপলোড)</span>
+                            </label>
+                            <span class="text-[11px] text-neutral-500 font-medium">Add multiple photos for product gallery (JPG, PNG, WEBP)</span>
+                        </div>
+
+                        <!-- Dropzone / Multi-file Picker -->
+                        <div class="border-2 border-dashed border-neutral-300 hover:border-black rounded-xs p-5 text-center bg-neutral-50/70 hover:bg-white transition cursor-pointer relative group">
+                            <input type="file" name="gallery_images[]" id="gallery_images_input" multiple accept="image/*"
+                                   @change="handleManualGallery($event)"
+                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            <div class="flex flex-col items-center justify-center pointer-events-none">
+                                <div class="w-10 h-10 rounded-full bg-neutral-200/70 group-hover:bg-neutral-900 group-hover:text-white flex items-center justify-center transition mb-2">
+                                    <svg class="w-5 h-5 text-neutral-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                </div>
+                                <p class="text-xs font-bold text-neutral-800">
+                                    Click to select multiple gallery images or drag & drop here
+                                </p>
+                                <p class="text-[11px] text-neutral-500 mt-0.5">
+                                    Select multiple files at once using <kbd class="px-1.5 py-0.5 bg-neutral-200 text-neutral-700 rounded-xs text-[10px] font-mono">Ctrl</kbd> or <kbd class="px-1.5 py-0.5 bg-neutral-200 text-neutral-700 rounded-xs text-[10px] font-mono">Shift</kbd>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Previews of selected manual files -->
+                        <div x-show="manualGalleryPreviews.length > 0" class="mt-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                                    <span>Selected Gallery Photos (<span x-text="manualGalleryPreviews.length"></span>)</span>
+                                </span>
+                                <button type="button" @click="manualGalleryPreviews = []; syncGalleryInput()" class="text-[10px] text-red-600 hover:underline">
+                                    Clear all manual photos
+                                </button>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <template x-for="(p, idx) in manualGalleryPreviews" :key="idx">
+                                    <div class="relative group border border-neutral-300 rounded-xs overflow-hidden bg-white shadow-2xs">
+                                        <img :src="p.url" class="w-20 h-20 object-cover">
+                                        <span class="absolute bottom-0 inset-x-0 bg-black/80 text-[9px] text-white text-center font-mono py-0.5 truncate px-1" x-text="p.name"></span>
+                                        <button type="button" @click.stop.prevent="removeManualGallery(idx)"
+                                                title="Remove this photo"
+                                                class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shadow-xs cursor-pointer">
+                                            ✕
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Previews of AI Extracted Gallery Photos (if any) with delete option -->
+                        <div x-show="formData.gallery_images && formData.gallery_images.length > 0" class="mt-4 p-3.5 bg-emerald-50/80 border border-emerald-300/80 rounded-xs">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-bold text-emerald-900 uppercase tracking-wider flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                                    <span>AI Extracted Gallery Photos (<span x-text="formData.gallery_images.length"></span>)</span>
+                                </span>
+                                <span class="text-[10px] text-emerald-700 font-mono">Will save to gallery automatically</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2.5">
+                                <template x-for="(gImg, gIdx) in formData.gallery_images" :key="gIdx">
+                                    <div class="relative group border-2 border-emerald-500 rounded-xs overflow-hidden bg-white shadow-2xs">
+                                        <img :src="gImg.url" class="w-16 h-16 object-cover">
+                                        <span class="absolute bottom-0 inset-x-0 bg-black/85 text-[8px] text-emerald-200 text-center font-mono py-0.5" x-text="gImg.width + 'x' + gImg.height"></span>
+                                        <button type="button" @click.stop.prevent="removeAiGallery(gIdx)"
+                                                title="Remove this photo from import"
+                                                class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center shadow-xs cursor-pointer">
+                                            ✕
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Short Description -->
@@ -270,6 +371,39 @@
                 isPublishing: false,
                 errorMessage: '',
                 fetchedSuccess: false,
+                manualGalleryPreviews: [],
+
+                handleManualGallery(e) {
+                    const files = Array.from(e.target.files || []);
+                    files.forEach(f => {
+                        this.manualGalleryPreviews.push({
+                            name: f.name,
+                            url: URL.createObjectURL(f),
+                            file: f
+                        });
+                    });
+                    this.syncGalleryInput();
+                },
+
+                removeManualGallery(index) {
+                    this.manualGalleryPreviews.splice(index, 1);
+                    this.syncGalleryInput();
+                },
+
+                syncGalleryInput() {
+                    const input = document.getElementById('gallery_images_input');
+                    if (!input || typeof DataTransfer === 'undefined') return;
+                    const dt = new DataTransfer();
+                    this.manualGalleryPreviews.forEach(p => {
+                        if (p.file) dt.items.add(p.file);
+                    });
+                    input.files = dt.files;
+                },
+
+                removeAiGallery(index) {
+                    this.formData.gallery_images.splice(index, 1);
+                },
+
                 formData: {
                     title: '{{ old("title", "") }}',
                     category_id: '{{ old("category_id", "") }}',

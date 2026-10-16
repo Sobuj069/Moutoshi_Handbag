@@ -104,6 +104,8 @@ class ProductController extends Controller
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
+            'gallery_images' => 'nullable|array',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         $slug = Str::slug($request->title);
@@ -149,11 +151,40 @@ class ProductController extends Controller
             'is_active' => $request->boolean('is_active', true),
         ]);
 
-        // Attach gallery images if available from AI import
+        // Process manually uploaded gallery images
+        $sort = 1;
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $file) {
+                if ($file && $file->isValid()) {
+                    $gPath = $file->store('products', 'public');
+                    $uploadsDir = public_path('uploads/products');
+                    if (!is_dir($uploadsDir)) {
+                        @mkdir($uploadsDir, 0755, true);
+                    }
+                    @copy(storage_path('app/public/' . $gPath), $uploadsDir . '/' . basename($gPath));
+
+                    if (!is_link(public_path('storage'))) {
+                        $storagePubDir = public_path('storage/products');
+                        if (!is_dir($storagePubDir)) {
+                            @mkdir($storagePubDir, 0755, true);
+                        }
+                        @copy(storage_path('app/public/' . $gPath), $storagePubDir . '/' . basename($gPath));
+                    }
+
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => $gPath,
+                        'is_primary' => false,
+                        'sort_order' => $sort++,
+                    ]);
+                }
+            }
+        }
+
         if ($request->filled('ai_gallery_images')) {
+            // Attach gallery images if available from AI import
             $gallery = is_array($request->ai_gallery_images) ? $request->ai_gallery_images : json_decode($request->ai_gallery_images, true);
             if (is_array($gallery)) {
-                $sort = 1;
                 foreach ($gallery as $g) {
                     $gPath = is_array($g) ? ($g['path'] ?? null) : $g;
                     if ($gPath) {
@@ -183,7 +214,7 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully with all images.');
     }
 
     public function edit(Product $product)
@@ -206,6 +237,8 @@ class ProductController extends Controller
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
+            'gallery_images' => 'nullable|array',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         $imagePath = $product->primary_image;
@@ -244,6 +277,54 @@ class ProductController extends Controller
             'is_active' => $request->boolean('is_active'),
         ]);
 
+        // Process deletion of requested gallery images
+        if ($request->filled('delete_gallery_images')) {
+            $delIds = is_array($request->delete_gallery_images)
+                ? $request->delete_gallery_images
+                : explode(',', $request->delete_gallery_images);
+
+            $imagesToDelete = ProductImage::where('product_id', $product->id)
+                ->whereIn('id', $delIds)
+                ->get();
+
+            foreach ($imagesToDelete as $delImg) {
+                @unlink(storage_path('app/public/' . $delImg->image_url));
+                @unlink(public_path('uploads/' . $delImg->image_url));
+                @unlink(public_path('storage/' . $delImg->image_url));
+                $delImg->delete();
+            }
+        }
+
+        // Process new gallery images upload
+        if ($request->hasFile('gallery_images')) {
+            $sort = ($product->images()->max('sort_order') ?? 0) + 1;
+            foreach ($request->file('gallery_images') as $file) {
+                if ($file && $file->isValid()) {
+                    $gPath = $file->store('products', 'public');
+                    $uploadsDir = public_path('uploads/products');
+                    if (!is_dir($uploadsDir)) {
+                        @mkdir($uploadsDir, 0755, true);
+                    }
+                    @copy(storage_path('app/public/' . $gPath), $uploadsDir . '/' . basename($gPath));
+
+                    if (!is_link(public_path('storage'))) {
+                        $storagePubDir = public_path('storage/products');
+                        if (!is_dir($storagePubDir)) {
+                            @mkdir($storagePubDir, 0755, true);
+                        }
+                        @copy(storage_path('app/public/' . $gPath), $storagePubDir . '/' . basename($gPath));
+                    }
+
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => $gPath,
+                        'is_primary' => false,
+                        'sort_order' => $sort++,
+                    ]);
+                }
+            }
+        }
+
         if ($request->filled('variant_names')) {
             ProductVariant::where('product_id', $product->id)->delete();
             $names = explode(',', $request->variant_names);
@@ -260,6 +341,19 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
+    }
+
+    public function deleteGalleryImage(ProductImage $image)
+    {
+        @unlink(storage_path('app/public/' . $image->image_url));
+        @unlink(public_path('uploads/' . $image->image_url));
+        @unlink(public_path('storage/' . $image->image_url));
+        $image->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Gallery image deleted successfully.',
+        ]);
     }
 
     public function bulkAction(Request $request)

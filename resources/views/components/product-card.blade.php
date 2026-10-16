@@ -38,6 +38,15 @@
             @endif
         </a>
 
+        <!-- Brand Watermark Logo Badge (Bottom Right) -->
+        <div class="absolute bottom-2.5 right-2.5 z-10 pointer-events-none select-none transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-1">
+            <div class="bg-white/90 backdrop-blur-xs px-2 sm:px-2.5 py-1 rounded-xs shadow-xs border border-white/80 flex items-center justify-center">
+                <img src="{{ asset('assets/images/logo.png') }}" 
+                     alt="Moutoshi Handbag" 
+                     class="h-4 sm:h-5 w-auto object-contain">
+            </div>
+        </div>
+
         <!-- Quick Action Overlay on Hover -->
         <div class="absolute inset-x-3 bottom-3 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
             <button type="button"
